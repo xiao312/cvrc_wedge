@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+10
+(
+    wedgeFront
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          16038;
+        startFace       31154;
+    }
+    wedgeBack
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          16038;
+        startFace       47192;
+    }
+    wall
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          695;
+        startFace       63230;
+    }
+    oxidizer_inlet
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          31;
+        startFace       63925;
+    }
+    oxidizer_slot_1
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          28;
+        startFace       63956;
+    }
+    oxidizer_slot_2
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          26;
+        startFace       63984;
+    }
+    oxidizer_slot_3
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          24;
+        startFace       64010;
+    }
+    fuel_inlet
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          3;
+        startFace       64034;
+    }
+    outlet
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          24;
+        startFace       64037;
+    }
+    defaultFaces
+    {
+        type            patch;
+        nFaces          544;
+        startFace       64061;
+    }
+)
+
+// ************************************************************************* //

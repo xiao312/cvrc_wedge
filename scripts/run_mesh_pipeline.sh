@@ -44,13 +44,18 @@ CASE_DIR="$(dirname "${SCRIPT_DIR}")"
 
 # Mesh generation scripts
 MESH_SCRIPT="${MESH_DIR}/create_wedge_v10.py"
-PARAM_SCRIPT="${MESH_DIR}/parameterize_mesh.py"
+PARAM_SCRIPT="${MESH_DIR}/parameterize_mesh_full.py"
+GEO_ORIG="${MESH_DIR}/cvrc_2d_profile.geo_unrolled"
+GEO_PARAM="${MESH_DIR}/cvrc_2d_profile_param.geo_unrolled"
 
 # Output mesh file
 MSH_FILE="${CASE_DIR}/cvrc_wedge.msh"
 
 # OpenFOAM mesh directory
 POLY_MESH="${CASE_DIR}/constant/polyMesh"
+
+# Default geo file
+GEO_FILE="${GEO_ORIG}"
 
 # =============================================================================
 # PARSE ARGUMENTS
@@ -147,7 +152,12 @@ if [[ ${RUN_PARAM} -eq 1 ]]; then
     fi
     cd "${MESH_DIR}"
     python3 "${PARAM_SCRIPT}"
-    echo "  Done"
+    # Update geo file to use parameterized version
+    GEO_FILE="${GEO_PARAM}"
+    echo "  Using parameterized geo: ${GEO_FILE}"
+    
+    # Now update the mesh script to use parameterized geo
+    sed -i "s|SOURCE_GEO.*|SOURCE_GEO = \"${GEO_PARAM}\"|" "${MESH_SCRIPT}"
 fi
 
 # =============================================================================
@@ -157,9 +167,15 @@ fi
 echo ""
 echo "Step 2: Generating Gmsh mesh..."
 echo "  Script: ${MESH_SCRIPT}"
+echo "  Geo file: ${GEO_FILE}"
 
 if [[ ! -f "${MESH_SCRIPT}" ]]; then
     echo "ERROR: Mesh script not found: ${MESH_SCRIPT}"
+    exit 1
+fi
+
+if [[ ! -f "${GEO_FILE}" ]]; then
+    echo "ERROR: Geo file not found: ${GEO_FILE}"
     exit 1
 fi
 
@@ -177,8 +193,14 @@ if ! python3 -c "import gmsh" 2>/dev/null; then
     exit 1
 fi
 
+# Temporarily update SOURCE_GEO in the mesh script
+TMP_SCRIPT="${MESH_DIR}/.create_wedge_tmp.py"
+cp "${MESH_SCRIPT}" "${TMP_SCRIPT}"
+sed -i "s|SOURCE_GEO.*|SOURCE_GEO = \"${GEO_FILE}\"|" "${TMP_SCRIPT}"
+
 cd "${CASE_DIR}"
-python3 "${MESH_SCRIPT}"
+python3 "${TMP_SCRIPT}"
+rm -f "${TMP_SCRIPT}"
 
 if [[ ! -f "${MSH_FILE}" ]]; then
     echo "ERROR: Mesh file not created: ${MSH_FILE}"
