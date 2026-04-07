@@ -7,50 +7,45 @@
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version         2;
-    format          ascii;
-    class           dictionary;
-    location        "system";
-    object          controlDict;
+    version          2.0;
+    format           ascii;
+    class            dictionary;
+    location         "constant";
+    object           CanteraTorchProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Control Dictionary for dfLowMachFoam
+// CVRC Combustor - Cantera Torch Properties
 // 
-// Solver: dfLowMachFoam (low Mach number combustion solver with Cantera)
+// Configuration for dfLowMachFoam solver with Cantera chemistry.
+// Uses GRI-Mech 3.0 mechanism for methane-air combustion.
 // -----------------------------------------------------------------------------
 
-application     dfLowMachFoam;
+chemistry       off;
 
-startFrom       startTime;
+CanteraMechanismFile "gri30.yaml";
 
-startTime       0;
+transportModel       "Mix";
 
-stopAt          endTime;
+odeCoeffs
+{
+    "relTol"         1e-6;
+    "absTol"         1e-10;
+}
 
-endTime         0.1;
+inertSpecie          "N2";
 
-deltaT          1e-05;
+splittingStrategy    off;
 
-writeControl    runTime;
+TorchSettings
+{
+    torch            off;
+}
 
-writeInterval   0.01;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  10;
-
-writeCompression on;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  no;
-
-maxCo           0.1;
+loadbalancing
+{
+    active           true;
+    log              false;
+    algorithm        allAverage;
+}
 
 // ************************************************************************* //

@@ -7,50 +7,26 @@
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version         2;
-    format          ascii;
-    class           dictionary;
-    location        "system";
-    object          controlDict;
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      turbulenceProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Control Dictionary for dfLowMachFoam
+// CVRC Combustor - Turbulence Properties
 // 
-// Solver: dfLowMachFoam (low Mach number combustion solver with Cantera)
+// k-epsilon turbulence model for RANS simulations.
+// For LES, use kEqn or Smagorinsky models instead.
 // -----------------------------------------------------------------------------
 
-application     dfLowMachFoam;
+simulationType  RAS;
 
-startFrom       startTime;
-
-startTime       0;
-
-stopAt          endTime;
-
-endTime         0.1;
-
-deltaT          1e-05;
-
-writeControl    runTime;
-
-writeInterval   0.01;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  10;
-
-writeCompression on;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  no;
-
-maxCo           0.1;
+RAS
+{
+    RASModel    kEpsilon;
+    turbulence  on;
+    printCoeffs on;
+}
 
 // ************************************************************************* //

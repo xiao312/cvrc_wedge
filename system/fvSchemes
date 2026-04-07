@@ -14,11 +14,8 @@ FoamFile
     object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Wedge Mesh - Finite Volume Schemes
-// 
-// Basic schemes for wedge mesh simulations.
-// Adjust as needed for your specific solver (e.g., rhoCentralFoam, reactingFoam).
-// -------------------------------------------------------------------------
+// CVRC Combustor - Finite Volume Schemes for dfLowMachFoam
+// -----------------------------------------------------------------------------
 
 ddtSchemes
 {
@@ -28,21 +25,29 @@ ddtSchemes
 gradSchemes
 {
     default         Gauss linear;
-    grad(p)         Gauss linear;
-    grad(U)         Gauss linear;
 }
 
 divSchemes
 {
-    default         none;
-    div(phi,U)      Gauss upwind;
-    div(phi,k)      Gauss upwind;
-    div(phi,epsilon) Gauss upwind;
+    default             none;
+
+    div(phi,U)          Gauss limitedLinearV 1;
+    div(phi,Yi)         Gauss limitedLinear01 1;
+    div(phi,h)          Gauss limitedLinear 1;
+    div(phi,K)          Gauss limitedLinear 1;
+    div(phid,p)         Gauss limitedLinear 1;
+    div(phi,epsilon)    Gauss limitedLinear 1;
+    div(phi,Yi_h)       Gauss limitedLinear01 1;
+    div(phi,k)          Gauss limitedLinear 1;
+    div(((rho*nuEff)*dev2(T(grad(U)))))     Gauss linear;
+    div(vk)             Gauss linear;
+    div(phi,ha)        Gauss limitedLinear 1;
+    div(hDiffCorrFlux) Gauss linear;
 }
 
 laplacianSchemes
 {
-    default         Gauss linear corrected;
+    default         Gauss linear orthogonal;
 }
 
 interpolationSchemes
@@ -52,7 +57,7 @@ interpolationSchemes
 
 snGradSchemes
 {
-    default         corrected;
+    default         orthogonal;
 }
 
 // ************************************************************************* //

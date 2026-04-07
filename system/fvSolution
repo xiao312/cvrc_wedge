@@ -14,64 +14,92 @@ FoamFile
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Wedge Mesh - Finite Volume Solution
-// 
-// Basic solver settings for wedge mesh simulations.
-// -------------------------------------------------------------------------
+// CVRC Combustor - Finite Volume Solution for dfLowMachFoam
+// -----------------------------------------------------------------------------
 
 solvers
 {
+    "rho.*"
+    {
+        solver          diagonal;
+    }
+
     p
     {
         solver          PCG;
         preconditioner  DIC;
-        tolerance       1e-06;
-        relTol          0.1;
+        tolerance       1e-6;
+        relTol          0.01;
     }
 
-    U
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    "(U|h|k|epsilon|ha)"
     {
         solver          PBiCGStab;
         preconditioner  DILU;
-        tolerance       1e-05;
+        tolerance       1e-6;
         relTol          0.1;
     }
 
-    k
+    "(U|h|k|epsilon|ha)Final"
+    {
+        $U;
+    }
+
+    "Yi.*"
     {
         solver          PBiCGStab;
         preconditioner  DILU;
-        tolerance       1e-05;
+        tolerance       1e-8;
         relTol          0.1;
     }
 
-    epsilon
+    "G.*"
     {
-        solver          PBiCGStab;
-        preconditioner  DILU;
-        tolerance       1e-05;
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-5;
         relTol          0.1;
+    }
+
+    GFinal
+    {
+        $G;
+        relTol          0;
     }
 }
 
-SIMPLE
+PIMPLE
 {
+    momentumPredictor   yes;
+    nOuterCorrectors    1;
+    nCorrectors         2;
     nNonOrthogonalCorrectors 0;
-    pRefCell        0;
-    pRefValue       0;
+
+    maxDeltaT           1e-4;
+    maxCo               0.25;
+    alphaTemp           0.05;
+    alphaY              0.05;
+    Yref
+    {
+        O2                  0.1;
+        CH4                 0.1;
+        H2O                 0.1;
+    }
+    rDeltaTSmoothingCoeff   0.025;
+    rDeltaTDampingCoeff     1;
 }
 
 relaxationFactors
 {
-    fields
-    {
-        p               0.3;
-    }
     equations
     {
-        U               0.7;
-        k               0.7;
-        epsilon         0.7;
+        ".*"            1;
     }
 }
 

@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  7                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      O2;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// CVRC Combustor - Oxygen Mass Fraction
+// 
+// Hot oxidizer composition (1029 K): 58% H2O, 42% O2 by weight
+// 
+// Boundary conditions:
+//   - oxidizer_inlet: Y_O2 = 0.42 (hot oxidizer)
+//   - fuel_inlet: Y_O2 = 0 (no oxygen in fuel)
+//   - oxidizer_slots: Y_O2 = 0.42 (same as main oxidizer)
+// -----------------------------------------------------------------------------
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   uniform 0.42;
+
+boundaryField
+{
+    wedgeFront
+    {
+        type            wedge;
+    }
+    wedgeBack
+    {
+        type            wedge;
+    }
+
+    axis
+    {
+        type            empty;
+    }
+
+    wall
+    {
+        type            zeroGradient;
+    }
+
+    // Hot oxidizer: 58% H2O, 42% O2
+    oxidizer_inlet
+    {
+        type            fixedValue;
+        value           uniform 0.42;
+    }
+
+    // Fuel: pure methane, no oxygen
+    fuel_inlet
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    oxidizer_slot_1
+    {
+        type            fixedValue;
+        value           uniform 0.42;
+    }
+    oxidizer_slot_2
+    {
+        type            fixedValue;
+        value           uniform 0.42;
+    }
+    oxidizer_slot_3
+    {
+        type            fixedValue;
+        value           uniform 0.42;
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+}
+
+// ************************************************************************* //

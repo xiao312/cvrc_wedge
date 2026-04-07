@@ -1,0 +1,147 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  7                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// CVRC Combustor - Velocity Field
+// 
+// Mass Flow Rates:
+//   - Fuel (CH4):     27.67 g/s = 0.02767 kg/s
+//   - Oxidizer:       319.78 g/s = 0.31978 kg/s
+//   - Hot oxidizer composition: 58% H2O, 42% O2 by weight
+//   - Hot oxidizer temperature: 1029 K
+// 
+// Boundary conditions:
+//   - Inlets: flowRateInletVelocity with mass flow rate
+//   - Walls: no-slip (adiabatic)
+//   - Outlet: pressure outlet (101,325 Pa)
+// 
+// For dfLowMachFoam with Cantera, density is computed from thermodynamic state.
+// The rhoInlet value should be the density at inlet conditions.
+// 
+// Hot oxidizer density at 1029 K:
+//   Using ideal gas: rho = p*M/(R*T)
+//   Molar mass of mixture (58% H2O + 42% O2): M = 0.58*18 + 0.42*32 = 10.44 + 13.44 = 23.88 g/mol
+//   rho_oxidizer = 101325 * 0.02388 / (8.314 * 1029) = 0.283 kg/m³
+// 
+// Fuel (CH4) at 300 K:
+//   rho_fuel = 101325 * 0.016 / (8.314 * 300) = 0.649 kg/m³
+// -----------------------------------------------------------------------------
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    // ---------------------------------------------------------------------
+    // WEDGE BOUNDARIES (front and back surfaces)
+    // ---------------------------------------------------------------------
+    wedgeFront
+    {
+        type            wedge;
+    }
+    wedgeBack
+    {
+        type            wedge;
+    }
+
+    // ---------------------------------------------------------------------
+    // SYMMETRY AXIS
+    // ---------------------------------------------------------------------
+    axis
+    {
+        type            empty;
+    }
+
+    // ---------------------------------------------------------------------
+    // COMBUSTOR WALLS - Adiabatic non-slip
+    // ---------------------------------------------------------------------
+    wall
+    {
+        type            noSlip;
+    }
+
+    // ---------------------------------------------------------------------
+    // OXIDIZER INLET - Hot oxidizer at 1029 K
+    // Composition: 58% H2O, 42% O2 by weight
+    // Mass flow rate: 319.78 g/s = 0.31978 kg/s
+    // 
+    // Using flowRateInletVelocity for mass flow rate specification
+    // The velocity profile will be computed to match the mass flow rate
+    // ---------------------------------------------------------------------
+    oxidizer_inlet
+    {
+        type                flowRateInletVelocity;
+        massFlowRate        0.31978;   // kg/s
+        rho                 rho;        // density field name
+        rhoInlet            0.283;      // kg/m³ - inlet density at 1029 K
+        value               uniform (0 0 0);
+    }
+
+    // ---------------------------------------------------------------------
+    // FUEL INLET - Pure methane
+    // Mass flow rate: 27.67 g/s = 0.02767 kg/s
+    // Temperature: 300 K (adjust as needed)
+    // ---------------------------------------------------------------------
+    fuel_inlet
+    {
+        type                flowRateInletVelocity;
+        massFlowRate        0.02767;   // kg/s
+        rho                 rho;        // density field name
+        rhoInlet            0.649;      // kg/m³ - CH4 density at 300 K, 1 atm
+        value               uniform (0 0 0);
+    }
+
+    // ---------------------------------------------------------------------
+    // OXIDIZER INJECTION SLOTS
+    // Secondary oxidizer injection - adjust flow rates as needed
+    // ---------------------------------------------------------------------
+    oxidizer_slot_1
+    {
+        type                flowRateInletVelocity;
+        massFlowRate        0.01;       // kg/s - adjust based on your case
+        rho                 rho;
+        rhoInlet            0.283;
+        value               uniform (0 0 0);
+    }
+    oxidizer_slot_2
+    {
+        type                flowRateInletVelocity;
+        massFlowRate        0.01;       // kg/s
+        rho                 rho;
+        rhoInlet            0.283;
+        value               uniform (0 0 0);
+    }
+    oxidizer_slot_3
+    {
+        type                flowRateInletVelocity;
+        massFlowRate        0.01;       // kg/s
+        rho                 rho;
+        rhoInlet            0.283;
+        value               uniform (0 0 0);
+    }
+
+    // ---------------------------------------------------------------------
+    // OUTLET - Pressure outlet
+    // ---------------------------------------------------------------------
+    outlet
+    {
+        type            pressureInletOutletVelocity;
+        inletValue       uniform (0 0 0);
+        value            uniform (0 0 0);
+    }
+}
+
+// ************************************************************************* //

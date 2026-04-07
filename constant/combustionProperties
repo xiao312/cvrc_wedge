@@ -7,50 +7,55 @@
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version         2;
-    format          ascii;
-    class           dictionary;
-    location        "system";
-    object          controlDict;
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      combustionProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Control Dictionary for dfLowMachFoam
+// CVRC Combustor - Combustion Properties
 // 
-// Solver: dfLowMachFoam (low Mach number combustion solver with Cantera)
+// PaSR (Partially Stirred Reactor) combustion model for turbulent combustion.
+// Alternative: EDC (Eddy Dissipation Concept) can be used for fine-structure
+// based combustion modeling.
 // -----------------------------------------------------------------------------
 
-application     dfLowMachFoam;
+combustionModel   PaSR;
 
-startFrom       startTime;
+EDCCoeffs
+{
+    version v2005;
+}
 
-startTime       0;
+PaSRCoeffs
+{
+   mixingScale
+   {
+      type   globalScale;
+      
+      globalScaleCoeffs
+      {
+          Cmix  0.01;
+      } 
 
-stopAt          endTime;
+      dynamicScaleCoeffs
+      {
+        ChiType      algebraic;
+      }	     
 
-endTime         0.1;
+   }
 
-deltaT          1e-05;
+   chemistryScale
+   {
+      type  globalConvertion;
 
-writeControl    runTime;
-
-writeInterval   0.01;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  10;
-
-writeCompression on;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  no;
-
-maxCo           0.1;
+      globalConvertionCoeffs
+      {
+          fuel CH4;
+          oxidizer O2;
+      }
+   }
+}
 
 // ************************************************************************* //

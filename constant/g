@@ -7,50 +7,27 @@
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version         2;
-    format          ascii;
-    class           dictionary;
-    location        "system";
-    object          controlDict;
+    version     2.0;
+    format      ascii;
+    class       uniformDimensionedVectorField;
+    location    "constant";
+    object      g;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Control Dictionary for dfLowMachFoam
+// CVRC Combustor - Gravity
 // 
-// Solver: dfLowMachFoam (low Mach number combustion solver with Cantera)
+// Standard gravity for combustion simulations.
+// -----------------------------------------------------------------------------
+// Note: For axisymmetric wedge mesh, gravity direction should be set based on
+// your coordinate system. The CVRC combustor is typically oriented with:
+//   - x-axis: axial direction (flow direction)
+//   - y-axis: radial direction (perpendicular to axis)
+//   - z-axis: tangential direction (wedge)
+// Gravity in the radial direction (y) for natural convection effects,
+// or set to (0 0 0) if natural convection is not considered.
 // -----------------------------------------------------------------------------
 
-application     dfLowMachFoam;
-
-startFrom       startTime;
-
-startTime       0;
-
-stopAt          endTime;
-
-endTime         0.1;
-
-deltaT          1e-05;
-
-writeControl    runTime;
-
-writeInterval   0.01;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  10;
-
-writeCompression on;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  no;
-
-maxCo           0.1;
+dimensions      [0 1 -2 0 0 0 0];
+value           (0 0 0);
 
 // ************************************************************************* //

@@ -1,7 +1,7 @@
 # OpenFOAM case files
 *.bak
 *.~ 
-*.orig
+
 
 # Gmsh backup files
 *.msh.bak
