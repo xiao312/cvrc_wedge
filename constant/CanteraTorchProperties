@@ -21,7 +21,7 @@ FoamFile
 // Inert species: N2 (required by GRI-Mech 3.0)
 // -----------------------------------------------------------------------------
 
-chemistry            on;
+chemistry            off;
 
 CanteraMechanismFile "gri30.yaml";
 
