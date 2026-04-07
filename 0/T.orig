@@ -18,10 +18,10 @@ FoamFile
 // 
 // Boundary conditions:
 //   - oxidizer_inlet: 1029 K (hot oxidizer)
-//   - fuel_inlet: 300 K (adjust as needed)
+//   - fuel_inlet: 300 K (pure CH4)
 //   - oxidizer_slots: 1029 K (same as main oxidizer)
-//   - outlet: zero gradient
-//   - walls: zero gradient (adiabatic)
+//   - outlet: inletOutlet for backflow handling
+//   - walls: zeroGradient (adiabatic)
 // -----------------------------------------------------------------------------
 
 dimensions      [0 0 0 1 0 0 0];
@@ -63,26 +63,25 @@ boundaryField
         value           uniform 300;
     }
 
-    // Oxidizer slots: same as main oxidizer
+    // Oxidizer slots treated as walls (adiabatic)
     oxidizer_slot_1
     {
-        type            fixedValue;
-        value           uniform 1029;
+        type            zeroGradient;
     }
     oxidizer_slot_2
     {
-        type            fixedValue;
-        value           uniform 1029;
+        type            zeroGradient;
     }
     oxidizer_slot_3
     {
-        type            fixedValue;
-        value           uniform 1029;
+        type            zeroGradient;
     }
 
     outlet
     {
-        type            zeroGradient;
+        type            inletOutlet;
+        inletValue      uniform 300;
+        value           uniform 300;
     }
 }
 

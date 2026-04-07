@@ -105,32 +105,19 @@ boundaryField
     }
 
     // ---------------------------------------------------------------------
-    // OXIDIZER INJECTION SLOTS
-    // Secondary oxidizer injection - adjust flow rates as needed
+    // OXIDIZER INJECTION SLOTS - Treated as walls (no active injection)
     // ---------------------------------------------------------------------
     oxidizer_slot_1
     {
-        type                flowRateInletVelocity;
-        massFlowRate        0.01;       // kg/s - adjust based on your case
-        rho                 rho;
-        rhoInlet            0.283;
-        value               uniform (0 0 0);
+        type            noSlip;
     }
     oxidizer_slot_2
     {
-        type                flowRateInletVelocity;
-        massFlowRate        0.01;       // kg/s
-        rho                 rho;
-        rhoInlet            0.283;
-        value               uniform (0 0 0);
+        type            noSlip;
     }
     oxidizer_slot_3
     {
-        type                flowRateInletVelocity;
-        massFlowRate        0.01;       // kg/s
-        rho                 rho;
-        rhoInlet            0.283;
-        value               uniform (0 0 0);
+        type            noSlip;
     }
 
     // ---------------------------------------------------------------------

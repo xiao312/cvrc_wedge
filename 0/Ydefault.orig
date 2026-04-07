@@ -57,25 +57,25 @@ boundaryField
         value           uniform 0;
     }
 
+    // Oxidizer slots treated as walls
     oxidizer_slot_1
     {
-        type            fixedValue;
-        value           uniform 0;
+        type            zeroGradient;
     }
     oxidizer_slot_2
     {
-        type            fixedValue;
-        value           uniform 0;
+        type            zeroGradient;
     }
     oxidizer_slot_3
     {
-        type            fixedValue;
-        value           uniform 0;
+        type            zeroGradient;
     }
 
     outlet
     {
-        type            zeroGradient;
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
 }
 

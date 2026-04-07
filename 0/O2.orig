@@ -19,9 +19,9 @@ FoamFile
 // Hot oxidizer composition (1029 K): 58% H2O, 42% O2 by weight
 // 
 // Boundary conditions:
-//   - oxidizer_inlet: Y_O2 = 0.42 (hot oxidizer)
-//   - fuel_inlet: Y_O2 = 0 (no oxygen in fuel)
-//   - oxidizer_slots: Y_O2 = 0.42 (same as main oxidizer)
+//   - oxidizer_inlet: Y_O2 = 0.42
+//   - fuel_inlet: Y_O2 = 0
+//   - outlet: inletOutlet for backflow handling
 // -----------------------------------------------------------------------------
 
 dimensions      [0 0 0 0 0 0 0];
@@ -63,25 +63,25 @@ boundaryField
         value           uniform 0;
     }
 
+    // Oxidizer slots treated as walls
     oxidizer_slot_1
     {
-        type            fixedValue;
-        value           uniform 0.42;
+        type            zeroGradient;
     }
     oxidizer_slot_2
     {
-        type            fixedValue;
-        value           uniform 0.42;
+        type            zeroGradient;
     }
     oxidizer_slot_3
     {
-        type            fixedValue;
-        value           uniform 0.42;
+        type            zeroGradient;
     }
 
     outlet
     {
-        type            zeroGradient;
+        type            inletOutlet;
+        inletValue      uniform 0.23;  // Approximate air composition
+        value           uniform 0.23;
     }
 }
 

@@ -19,7 +19,7 @@ FoamFile
 // Boundary conditions:
 //   - oxidizer_inlet: Y_CH4 = 0 (no methane in oxidizer)
 //   - fuel_inlet: Y_CH4 = 1.0 (pure methane)
-//   - oxidizer_slots: Y_CH4 = 0 (no methane in slots)
+//   - outlet: inletOutlet for backflow handling
 // -----------------------------------------------------------------------------
 
 dimensions      [0 0 0 0 0 0 0];
@@ -47,7 +47,7 @@ boundaryField
         type            zeroGradient;
     }
 
-    // Hot oxidizer: 58% H2O, 42% O2 (no methane)
+    // Hot oxidizer: no methane
     oxidizer_inlet
     {
         type            fixedValue;
@@ -61,25 +61,25 @@ boundaryField
         value           uniform 1.0;
     }
 
+    // Oxidizer slots treated as walls
     oxidizer_slot_1
     {
-        type            fixedValue;
-        value           uniform 0;
+        type            zeroGradient;
     }
     oxidizer_slot_2
     {
-        type            fixedValue;
-        value           uniform 0;
+        type            zeroGradient;
     }
     oxidizer_slot_3
     {
-        type            fixedValue;
-        value           uniform 0;
+        type            zeroGradient;
     }
 
     outlet
     {
-        type            zeroGradient;
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
 }
 

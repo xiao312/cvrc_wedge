@@ -16,8 +16,9 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // CVRC Combustor - Pressure Field
 // 
-// Initial/boundary conditions for pressure [Pa].
-// For low-Mach formulation, pressure is normalized (p_rgh = p - rho*g*h).
+// For low-Mach combustion:
+//   - Inlets: zeroGradient (mass flow is specified)
+//   - Outlet: totalPressure (more stable than fixedValue for compressible)
 // -----------------------------------------------------------------------------
 
 dimensions      [1 -1 -2 0 0 0 0];
@@ -26,9 +27,6 @@ internalField   uniform 101325;
 
 boundaryField
 {
-    // ---------------------------------------------------------------------
-    // WEDGE BOUNDARIES
-    // ---------------------------------------------------------------------
     wedgeFront
     {
         type            wedge;
@@ -38,41 +36,26 @@ boundaryField
         type            wedge;
     }
 
-    // ---------------------------------------------------------------------
-    // SYMMETRY AXIS
-    // ---------------------------------------------------------------------
     axis
     {
         type            empty;
     }
 
-    // ---------------------------------------------------------------------
-    // COMBUSTOR WALLS
-    // ---------------------------------------------------------------------
     wall
     {
         type            zeroGradient;
     }
 
-    // ---------------------------------------------------------------------
-    // OXIDIZER INLET
-    // ---------------------------------------------------------------------
     oxidizer_inlet
     {
         type            zeroGradient;
     }
 
-    // ---------------------------------------------------------------------
-    // FUEL INLET
-    // ---------------------------------------------------------------------
     fuel_inlet
     {
         type            zeroGradient;
     }
 
-    // ---------------------------------------------------------------------
-    // OXIDIZER INJECTION SLOTS
-    // ---------------------------------------------------------------------
     oxidizer_slot_1
     {
         type            zeroGradient;
@@ -86,12 +69,10 @@ boundaryField
         type            zeroGradient;
     }
 
-    // ---------------------------------------------------------------------
-    // OUTLET
-    // ---------------------------------------------------------------------
     outlet
     {
-        type            fixedValue;
+        type            totalPressure;
+        p0              uniform 101325;
         value           uniform 101325;
     }
 }
