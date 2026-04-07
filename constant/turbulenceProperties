@@ -20,7 +20,7 @@ FoamFile
 // For LES, use kEqn or Smagorinsky models instead.
 // -----------------------------------------------------------------------------
 
-simulationType  RAS;
+simulationType  laminar;//RAS;
 
 RAS
 {
