@@ -146,7 +146,7 @@ fi
 
 # Create temp script with updated SOURCE_GEO path
 TMP_SCRIPT="${MESH_DIR}/.create_wedge_tmp.py"
-sed "s|SOURCE_GEO = os.path.join(SCRIPT_DIR, \"cvrc_2d_profile.geo_unrounded\")|SOURCE_GEO = \"${GEO_FILE}\"|" "${MESH_SCRIPT}" > "${TMP_SCRIPT}"
+sed "s|SOURCE_GEO = os.path.join(SCRIPT_DIR, \"cvrc_2d_profile.geo_unrolled\")|SOURCE_GEO = \"${GEO_FILE}\"|" "${MESH_SCRIPT}" > "${TMP_SCRIPT}"
 
 cd "${CASE_DIR}"
 python3 "${TMP_SCRIPT}"

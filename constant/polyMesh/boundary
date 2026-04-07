@@ -21,70 +21,70 @@ FoamFile
     {
         type            patch;
         physicalType    patch;
-        nFaces          16038;
-        startFace       31154;
+        nFaces          16068;
+        startFace       31211;
     }
     wedgeBack
     {
         type            patch;
         physicalType    patch;
-        nFaces          16038;
-        startFace       47192;
+        nFaces          16068;
+        startFace       47279;
     }
     wall
     {
         type            patch;
         physicalType    patch;
         nFaces          695;
-        startFace       63230;
+        startFace       63347;
     }
     oxidizer_inlet
     {
         type            patch;
         physicalType    patch;
-        nFaces          31;
-        startFace       63925;
+        nFaces          33;
+        startFace       64042;
     }
     oxidizer_slot_1
     {
         type            patch;
         physicalType    patch;
         nFaces          28;
-        startFace       63956;
+        startFace       64075;
     }
     oxidizer_slot_2
     {
         type            patch;
         physicalType    patch;
         nFaces          26;
-        startFace       63984;
+        startFace       64103;
     }
     oxidizer_slot_3
     {
         type            patch;
         physicalType    patch;
         nFaces          24;
-        startFace       64010;
+        startFace       64129;
     }
     fuel_inlet
     {
         type            patch;
         physicalType    patch;
         nFaces          3;
-        startFace       64034;
+        startFace       64153;
     }
     outlet
     {
         type            patch;
         physicalType    patch;
         nFaces          24;
-        startFace       64037;
+        startFace       64156;
     }
     defaultFaces
     {
         type            patch;
         nFaces          544;
-        startFace       64061;
+        startFace       64180;
     }
 )
 
