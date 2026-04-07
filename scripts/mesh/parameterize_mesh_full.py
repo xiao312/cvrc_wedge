@@ -38,73 +38,79 @@ NX_INLET = 17           # Original: 17 → 16 cells
 # Slot strip: x = -140 to -128 mm (thin connecting section)
 NX_SLOT_STRIP = 7        # Original: 7 → 6 cells
 
-# Axis radial connections: y-direction node counts in slot strip
-# These are the radial connections between inlet blocks
-NY_SLOT_STRIP_AXIS = 13  # Original: 13 → 12 cells (y=0 to y=3)
-NY_SLOT_STRIP_S1 = 4    # Original: 4 → 3 cells (y=3.0-3.8)
-NY_SLOT_STRIP_S2 = 9    # Original: 9 → 8 cells (y=3.8-5.8)
-NY_SLOT_STRIP_S3 = 3    # Original: 3 → 2 cells (y=5.8-6.3)
-NY_SLOT_STRIP_S4 = 8    # Original: 8 → 7 cells (y=6.3-8.0)
-NY_SLOT_STRIP_S5 = 3    # Original: 3 → 2 cells (y=8.0-8.3)
-NY_SLOT_STRIP_S6 = 7    # Original: 7 → 6 cells (y=8.3-9.7)
-NY_SLOT_STRIP_S7 = 4    # Original: 4 → 3 cells (y=9.7-10.235)
-
-# Main axial channel: x = -128 to -10.16 mm (plenum before chamber)
-NY_AXIS_LOW = 13        # Original: 13 → 12 cells (y=0 to y=3.0)
-NY_AXIS_S1 = 4          # Original: 4 → 3 cells (y=3.0-3.8)
-NY_AXIS_S2 = 9          # Original: 9 → 8 cells (y=3.8-5.8)
-NY_AXIS_S3 = 3          # Original: 3 → 2 cells (y=5.8-6.3)
-NY_AXIS_S4 = 8          # Original: 8 → 7 cells (y=6.3-8.0)
-NY_AXIS_S5 = 3          # Original: 3 → 2 cells (y=8.0-8.3)
-NY_AXIS_S6 = 7          # Original: 7 → 6 cells (y=8.3-9.7)
-NY_AXIS_S7 = 4          # Original: 4 → 3 cells (y=9.7-10.235)
-
-# Mid section: x = -10.16 to 0 mm
-NX_MID = 49             # Original: 49 → 48 cells (main horizontal)
-NY_MID_LOW = 13         # Original: 13 → 12 cells (y=0 to y=10.235)
-NY_MID_SLOT_Y = 49      # Original: 49 → 48 cells (horizontal mid chamber)
-NY_MID_Y43_44 = 11      # Original: 11 (fuel step connections)
-NY_MID_Y42_36 = 11      # Original: 11
+# Mid section: x = -128 to -10.16 mm
+NX_MID_LOW = 13          # Original: 13
+NX_MID_HIGH = 49         # Original: 49
 
 # Chamber: x = 0 to 20 mm
-NX_CHAMBER = 17         # Original: 17 → 16 cells
-NY_CHAMBER_LOW = 17     # Original: 17 (y=0 to y=10.235)
-NY_CHAMBER_Y42 = 11    # Original: 11 (y=10.235 to y=11)
-NY_CHAMBER_Y44 = 11    # Original: 11 (y=11 to y=11.53)
+NX_CHAMBER = 17          # Original: 17 → 16 cells
 
 # Upper/fuel section
-NX_FUEL_STEP = 21       # Original: 21 (fuel step axial)
-NY_FUEL = 4             # Original: 4 (fuel annulus height)
-NY_UPPER = 21          # Original: 21 (upper section)
+NX_FUEL_STEP = 21        # Original: 21 (fuel step axial)
+NX_UPPER = 17            # Original: 17
 
 # Y-DIRECTION PARAMETERS FOR 7 INLET BLOCKS
+# Each block can have independent y-resolution
 # ------------------------------------------
-# Block 1: y=3.0-3.8 mm
-NY_INLET_BLOCK_1 = 11    # Original: 4 → 3 cells
 
-# Block 2: y=3.8-5.8 mm
-NY_INLET_BLOCK_2 = 9    # Original: 9 → 8 cells
+# INLET BLOCKS (x = -160 to -140 mm): 7 blocks stacked vertically
+# Block 1: y=3.0-3.8 mm (thin slot)
+NY_INLET_BLOCK_1 = 4     # Original: 4 → 3 cells
 
-# Block 3: y=5.8-6.3 mm  
-NY_INLET_BLOCK_3 = 6    # Original: 3 → 2 cells
+# Block 2: y=3.8-5.8 mm (thick slot)
+NY_INLET_BLOCK_2 = 9     # Original: 9 → 8 cells
 
-# Block 4: y=6.3-8.0 mm
-NY_INLET_BLOCK_4 = 8    # Original: 8 → 7 cells
+# Block 3: y=5.8-6.3 mm (very thin)
+NY_INLET_BLOCK_3 = 3     # Original: 3 → 2 cells
 
-# Block 5: y=8.0-8.3 mm
-NY_INLET_BLOCK_5 = 7    # Original: 3 → 2 cells
+# Block 4: y=6.3-8.0 mm (thick)
+NY_INLET_BLOCK_4 = 8     # Original: 8 → 7 cells
 
-# Block 6: y=8.3-9.7 mm
-NY_INLET_BLOCK_6 = 7    # Original: 7 → 6 cells
+# Block 5: y=8.0-8.3 mm (very thin)
+NY_INLET_BLOCK_5 = 3     # Original: 3 → 2 cells
 
-# Block 7: y=9.7-10.235 mm
-NY_INLET_BLOCK_7 = 4    # Original: 4 → 3 cells
+# Block 6: y=8.3-9.7 mm (medium)
+NY_INLET_BLOCK_6 = 7     # Original: 7 → 6 cells
 
-# Slot strip inlet connections (x = -140 mm face)
-NY_INLET_STRIP_1 = 7    # Original: 7 → 6 cells
-NY_INLET_STRIP_2 = 7    # Original: 7 → 6 cells
-NY_INLET_STRIP_3 = 7    # Original: 7 → 6 cells
-NY_INLET_STRIP_4 = 7    # Original: 7 → 6 cells
+# Block 7: y=9.7-10.235 mm (thin)
+NY_INLET_BLOCK_7 = 4     # Original: 4 → 3 cells
+
+# SLOT STRIP (x = -140 to -128 mm): radial connections
+NY_SLOT_STRIP_AXIS = 13   # Original: 13 (y=0 to y=3)
+NY_SLOT_STRIP_1 = 4       # Original: 4 (y=3.0-3.8)
+NY_SLOT_STRIP_2 = 9       # Original: 9 (y=3.8-5.8)
+NY_SLOT_STRIP_3 = 3       # Original: 3 (y=5.8-6.3)
+NY_SLOT_STRIP_4 = 8       # Original: 8 (y=6.3-8.0)
+NY_SLOT_STRIP_5 = 3       # Original: 3 (y=8.0-8.3)
+NY_SLOT_STRIP_6 = 7       # Original: 7 (y=8.3-9.7)
+NY_SLOT_STRIP_7 = 4       # Original: 4 (y=9.7-10.235)
+
+# AXIS SECTION (x = -128 to -10.16 mm): main flow
+NY_AXIS_3 = 13            # Original: 13 (y=0-3)
+NY_AXIS_1 = 4             # Original: 4 (y=3.0-3.8)
+NY_AXIS_2 = 9             # Original: 9 (y=3.8-5.8)
+
+# MID SECTION (x = -10.16 to 0 mm)
+NY_MID_LOW = 13           # Original: 13
+NY_MID_HIGH = 49          # Original: 49
+
+# FUEL STEP
+NY_FUEL_Y = 4             # Original: 4
+
+# UPPER SECTION
+NY_UPPER_Y = 21           # Original: 21
+
+# Miscellaneous y-direction counts
+NY_3 = 3                  # Very thin (2 cells)
+NY_4 = 4                  # Thin (3 cells)
+NY_7 = 7                  # Medium (6 cells)
+NY_8 = 8                  # Thick (7 cells)
+NY_9 = 9                  # Thick (8 cells)
+NY_11 = 11                # Connect
+NY_13 = 13                # Axis
+NY_17 = 17                # Chamber
+NY_21 = 21                # Upper
+NY_49 = 49                # Mid
 
 # =============================================================================
 # FILES
@@ -115,26 +121,117 @@ INPUT_FILE = os.path.join(SCRIPT_DIR, "cvrc_2d_profile.geo_unrolled")
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "cvrc_2d_profile_param.geo_unrolled")
 
 # =============================================================================
-# ANALYZE ORIGINAL FILE
+# LINE MAPPING - Based on geometry analysis
 # =============================================================================
 
-def analyze_original():
-    """Analyze the original geo file to understand line counts."""
-    with open(INPUT_FILE, 'r') as f:
-        lines = f.readlines()
+def create_line_mapping():
+    """
+    Map each line ID to its controlled parameter.
     
-    # Find all Transfinite Curve lines
-    counts = {}
-    for line in lines:
-        match = re.search(r'Transfinite Curve \{(\d+)\} = (\d+)', line)
-        if match:
-            line_id = int(match.group(1))
-            node_count = int(match.group(2))
-            if node_count not in counts:
-                counts[node_count] = []
-            counts[node_count].append(line_id)
+    Line assignments based on block structure:
     
-    return counts
+    INLET BLOCKS (x = -160 to -140 mm):
+    - Lines 1,3,6,9,12,15,18,21: horizontal (axial) → NX_INLET = 17
+    - Lines 2,4: Block 1 vertical → NY_INLET_BLOCK_1
+    - Lines 5,7: Block 2 vertical → NY_INLET_BLOCK_2
+    - Lines 8,10: Block 3 vertical → NY_INLET_BLOCK_3
+    - Lines 11,13: Block 4 vertical → NY_INLET_BLOCK_4
+    - Lines 14,16: Block 5 vertical → NY_INLET_BLOCK_5
+    - Lines 17,19: Block 6 vertical → NY_INLET_BLOCK_6
+    - Lines 20,22: Block 7 vertical → NY_INLET_BLOCK_7
+    """
+    
+    mapping = {}
+    
+    # =================================================================
+    # GENERIC MAPPINGS (will be overridden by block-specific below)
+    # =================================================================
+    
+    # Lines with 3 nodes (very thin)
+    for lid in [27, 30, 44, 49, 60, 62, 66, 68, 69, 74, 76]:
+        mapping[lid] = ('NY_3', NY_3)
+    
+    # Lines with 4 nodes (thin)
+    for lid in [24, 28, 33, 54]:
+        mapping[lid] = ('NY_4', NY_4)
+    
+    # Lines with 7 nodes (medium)
+    for lid in [25, 29, 31, 34, 51, 53]:
+        mapping[lid] = ('NY_7', NY_7)
+    
+    # Lines with 8 nodes
+    for lid in [46, 48]:
+        mapping[lid] = ('NY_8', NY_8)
+    
+    # Lines with 9 nodes
+    for lid in [41, 43]:
+        mapping[lid] = ('NY_9', NY_9)
+    
+    # Lines with 11 nodes
+    for lid in [59, 61, 63, 65, 67, 70, 78, 80]:
+        mapping[lid] = ('NY_11', NY_11)
+    
+    # Lines with 13 nodes (axis radial)
+    for lid in [35, 36, 37, 38, 39, 40, 42, 45, 47, 50, 52, 56]:
+        mapping[lid] = ('NY_13', NY_13)
+    
+    # Lines with 17 nodes (chamber axial)
+    for lid in [71, 73, 75, 77, 79]:
+        mapping[lid] = ('NX_CHAMBER', NX_CHAMBER)
+    
+    # Lines with 49 nodes (mid horizontal)
+    for lid in [57, 64, 72]:
+        mapping[lid] = ('NY_49', NY_49)
+    
+    # Lines with 21 nodes
+    for lid in [55]:
+        mapping[lid] = ('NY_21', NY_21)
+    
+    # =================================================================
+    # BLOCK-SPECIFIC MAPPINGS (override generic above)
+    # =================================================================
+    
+    # Inlet horizontal lines (x-direction) - NX_INLET = 17
+    for lid in [1, 3, 6, 9, 12, 15, 18, 21]:
+        mapping[lid] = ('NX_INLET', NX_INLET)
+    
+    # Inlet Block 1 (y=3.0-3.8): Lines 2, 4 → NY_INLET_BLOCK_1
+    for lid in [2, 4]:
+        mapping[lid] = ('NY_INLET_BLOCK_1', NY_INLET_BLOCK_1)
+    
+    # Inlet Block 2 (y=3.8-5.8): Lines 5, 7 → NY_INLET_BLOCK_2
+    for lid in [5, 7]:
+        mapping[lid] = ('NY_INLET_BLOCK_2', NY_INLET_BLOCK_2)
+    
+    # Inlet Block 3 (y=5.8-6.3): Lines 8, 10 → NY_INLET_BLOCK_3
+    for lid in [8, 10]:
+        mapping[lid] = ('NY_INLET_BLOCK_3', NY_INLET_BLOCK_3)
+    
+    # Inlet Block 4 (y=6.3-8.0): Lines 11, 13 → NY_INLET_BLOCK_4
+    for lid in [11, 13]:
+        mapping[lid] = ('NY_INLET_BLOCK_4', NY_INLET_BLOCK_4)
+    
+    # Inlet Block 5 (y=8.0-8.3): Lines 14, 16 → NY_INLET_BLOCK_5
+    for lid in [14, 16]:
+        mapping[lid] = ('NY_INLET_BLOCK_5', NY_INLET_BLOCK_5)
+    
+    # Inlet Block 6 (y=8.3-9.7): Lines 17, 19 → NY_INLET_BLOCK_6
+    for lid in [17, 19]:
+        mapping[lid] = ('NY_INLET_BLOCK_6', NY_INLET_BLOCK_6)
+    
+    # Inlet Block 7 (y=9.7-10.235): Lines 20, 22 → NY_INLET_BLOCK_7
+    for lid in [20, 22]:
+        mapping[lid] = ('NY_INLET_BLOCK_7', NY_INLET_BLOCK_7)
+    
+    # Slot strip horizontal (x-direction) - NX_SLOT_STRIP = 7
+    for lid in [23, 25, 26, 28, 29, 31, 32, 34]:
+        mapping[lid] = ('NX_SLOT_STRIP', NX_SLOT_STRIP)
+    
+    return mapping
+
+# =============================================================================
+# MAIN FUNCTION
+# =============================================================================
 
 def parameterize_geo():
     """Apply all parameter substitutions."""
@@ -145,102 +242,59 @@ def parameterize_geo():
     print(f"\nInput:  {INPUT_FILE}")
     print(f"Output: {OUTPUT_FILE}")
     
-    # Analyze original
-    counts = analyze_original()
-    print(f"\nOriginal file has {sum(len(v) for v in counts.values())} transfinite curves")
-    print(f"Node count distribution:")
-    for nc in sorted(counts.keys()):
-        print(f"  {nc:3d} nodes: {len(counts[nc]):3d} lines")
-    
-    print(f"\nParameters to apply:")
-    print(f"  X-DIRECTION (axial):")
-    print(f"    NX_INLET      = {NX_INLET:3d}  (inlet, 7 blocks)")
-    print(f"    NX_SLOT_STRIP = {NX_SLOT_STRIP:3d}  (slot strip)")
-    print(f"    NX_MID        = {NX_MID:3d}  (mid section)")
-    print(f"    NX_CHAMBER    = {NX_CHAMBER:3d}  (chamber)")
-    print(f"    NX_FUEL_STEP  = {NX_FUEL_STEP:3d}  (fuel step)")
-    print(f"\n  Y-DIRECTION (radial) at inlet:")
-    print(f"    NY_INLET_BLOCK_1 = {NY_INLET_BLOCK_1:3d}  (y=3.0-3.8mm)")
-    print(f"    NY_INLET_BLOCK_2 = {NY_INLET_BLOCK_2:3d}  (y=3.8-5.8mm)")
-    print(f"    NY_INLET_BLOCK_3 = {NY_INLET_BLOCK_3:3d}  (y=5.8-6.3mm)")
-    print(f"    NY_INLET_BLOCK_4 = {NY_INLET_BLOCK_4:3d}  (y=6.3-8.0mm)")
-    print(f"    NY_INLET_BLOCK_5 = {NY_INLET_BLOCK_5:3d}  (y=8.0-8.3mm)")
-    print(f"    NY_INLET_BLOCK_6 = {NY_INLET_BLOCK_6:3d}  (y=8.3-9.7mm)")
-    print(f"    NY_INLET_BLOCK_7 = {NY_INLET_BLOCK_7:3d}  (y=9.7-10.235mm)")
-    print(f"\n  Y-DIRECTION elsewhere:")
-    print(f"    NY_AXIS = {NY_AXIS_LOW:3d} (axis radial)")
-    print(f"    NY_MID  = {NY_MID_LOW:3d} (mid section radial)")
-    print(f"    NY_UPPER = {NY_UPPER:3d} (upper sections)")
-    print(f"{'='*70}\n")
-    
-    # Read original
+    # Read original file
     with open(INPUT_FILE, 'r') as f:
         content = f.read()
     
-    substitutions = {}
+    # Get line mapping
+    mapping = create_line_mapping()
     
-    # Map node counts to parameters based on line position
-    # This is the critical part - need to know which lines map to which blocks
+    print(f"\nParameters:")
+    print(f"  NX_INLET = {NX_INLET}")
+    print(f"  NX_SLOT_STRIP = {NX_SLOT_STRIP}")
+    print(f"  NX_MID_LOW = {NX_MID_LOW}")
+    print(f"  NX_CHAMBER = {NX_CHAMBER}")
+    print(f"\n  NY_INLET_BLOCK_1 = {NY_INLET_BLOCK_1}  (y=3.0-3.8mm)")
+    print(f"  NY_INLET_BLOCK_2 = {NY_INLET_BLOCK_2}  (y=3.8-5.8mm)")
+    print(f"  NY_INLET_BLOCK_3 = {NY_INLET_BLOCK_3}  (y=5.8-6.3mm)")
+    print(f"  NY_INLET_BLOCK_4 = {NY_INLET_BLOCK_4}  (y=6.3-8.0mm)")
+    print(f"  NY_INLET_BLOCK_5 = {NY_INLET_BLOCK_5}  (y=8.0-8.3mm)")
+    print(f"  NY_INLET_BLOCK_6 = {NY_INLET_BLOCK_6}  (y=8.3-9.7mm)")
+    print(f"  NY_INLET_BLOCK_7 = {NY_INLET_BLOCK_7}  (y=9.7-10.235mm)")
+    print(f"{'='*70}\n")
     
-    # Lines with 3 nodes - very thin slots (2 cells)
-    # These are lines 8,10,14,16,27,30,44,49,60,62,66,68,69,74,76
-    for lid in [8, 10, 14, 16, 27, 30, 44, 49, 60, 62, 66, 68, 69, 74, 76]:
-        substitutions[lid] = 3  # NY_VERY_THIN
-    
-    # Lines with 4 nodes - thin slots (3 cells)
-    # These are: 2,4,20,22,24,28,33,54 and others
-    for lid in [2, 4, 20, 22, 24, 28, 33, 54]:
-        substitutions[lid] = 4  # NY_THIN
-    
-    # Lines with 7 nodes - medium (6 cells)
-    for lid in [23, 25, 26, 29, 31, 32, 34, 51, 53]:
-        substitutions[lid] = 7  # NY_MEDIUM
-    
-    # Lines with 8 nodes - thick 7 cells
-    for lid in [11, 13, 46, 48]:
-        substitutions[lid] = 8  # NY_THICK_7
-    
-    # Lines with 9 nodes - thick (8 cells)
-    for lid in [5, 7, 41, 43]:
-        substitutions[lid] = 9  # NY_SLOT_THICK
-    
-    # Lines with 11 nodes
-    for lid in [59, 61, 63, 65, 67, 70, 78, 80]:
-        substitutions[lid] = 11  # NY_CONN or NY_FUEL
-    
-    # Lines with 13 nodes - axis radial
-    for lid in [35, 36, 37, 38, 39, 40, 42, 45, 47, 50, 52, 54, 55]:
-        substitutions[lid] = 13  # NY_AXIS
-    
-    # Lines with 17 nodes - chamber/step
-    for lid in [1, 3, 6, 9, 12, 15, 18, 21, 71, 73, 75, 77, 79]:
-        substitutions[lid] = 17  # NX_INLET or NX_CHAMBER
-    
-    # Lines with 49 nodes - mid horizontal
-    for lid in [57, 64, 72]:
-        substitutions[lid] = 49  # NX_MID
-    
-    # Lines with 21 nodes - upper
-    for lid in [59, 61, 78, 80]:
-        substitutions[lid] = 21  # NY_UPPER
-    
-    # Apply substitutions
-    changes = 0
-    for line_id, node_count in substitutions.items():
-        pattern = f'Transfinite Curve \\{{{line_id}\\}} = \\d+'
-        replacement = f'Transfinite Curve {{{line_id}}} = {node_count}'
-        new_content = re.sub(pattern, replacement, content)
-        if new_content != content:
-            changes += 1
-            content = new_content
+    # Apply substitutions - handle "Using Progression 1" format
+    changes = {}
+    for line_id, (param, value) in mapping.items():
+        # Match both with and without "Using Progression"
+        patterns = [
+            (f'Transfinite Curve \\{{{line_id}\\}} = \\d+ Using Progression \\d+',
+             f'Transfinite Curve {{{line_id}}} = {value} Using Progression 1'),
+            (f'Transfinite Curve \\{{{line_id}\\}} = \\d+',
+             f'Transfinite Curve {{{line_id}}} = {value}'),
+        ]
+        for pattern, replacement in patterns:
+            new_content = re.sub(pattern, replacement, content)
+            if new_content != content:
+                changes[line_id] = (param, value)
+                content = new_content
+                break
     
     # Write output
     with open(OUTPUT_FILE, 'w') as f:
         f.write(content)
     
-    print(f"Substitutions attempted: {len(substitutions)}")
-    print(f"Changes made: {changes}")
-    print(f"Output: {OUTPUT_FILE}")
+    print(f"Substitutions made: {len(changes)}")
+    print(f"\nChanges by line:")
+    for lid in sorted(changes.keys()):
+        param, value = changes[lid]
+        print(f"  Line {lid}: {param} = {value}")
+    
+    print(f"\nOutput: {OUTPUT_FILE}")
+    print(f"\nTo use:")
+    print(f"  1. Edit parameters at top of this script")
+    print(f"  2. Run: python3 {os.path.basename(__file__)}")
+    print(f"  3. Run: ./scripts/run_mesh_pipeline.sh --param --clean")
     
     return True
 
