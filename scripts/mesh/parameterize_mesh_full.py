@@ -80,19 +80,19 @@ NY_UPPER = 21          # Original: 21 (upper section)
 # Y-DIRECTION PARAMETERS FOR 7 INLET BLOCKS
 # ------------------------------------------
 # Block 1: y=3.0-3.8 mm
-NY_INLET_BLOCK_1 = 4    # Original: 4 → 3 cells
+NY_INLET_BLOCK_1 = 11    # Original: 4 → 3 cells
 
 # Block 2: y=3.8-5.8 mm
 NY_INLET_BLOCK_2 = 9    # Original: 9 → 8 cells
 
 # Block 3: y=5.8-6.3 mm  
-NY_INLET_BLOCK_3 = 3    # Original: 3 → 2 cells
+NY_INLET_BLOCK_3 = 6    # Original: 3 → 2 cells
 
 # Block 4: y=6.3-8.0 mm
 NY_INLET_BLOCK_4 = 8    # Original: 8 → 7 cells
 
 # Block 5: y=8.0-8.3 mm
-NY_INLET_BLOCK_5 = 3    # Original: 3 → 2 cells
+NY_INLET_BLOCK_5 = 7    # Original: 3 → 2 cells
 
 # Block 6: y=8.3-9.7 mm
 NY_INLET_BLOCK_6 = 7    # Original: 7 → 6 cells

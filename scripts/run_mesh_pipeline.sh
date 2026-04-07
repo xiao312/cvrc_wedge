@@ -4,57 +4,33 @@
 # ========================
 # Generates a 3D wedge mesh for OpenFOAM from the 2D CVRC profile.
 #
-# This script:
-# 1. Parameterizes the 2D profile mesh (optional)
-# 2. Generates the 3D wedge mesh using Gmsh
-# 3. Converts to OpenFOAM format (gmshToFoam)
-# 4. Cleans up zone files
-# 5. Scales mesh from mm to meters
-# 6. Runs checkMesh to verify quality
-#
-# Usage
-# -----
+# Usage:
 #   ./scripts/run_mesh_pipeline.sh [OPTIONS]
 #
-# Options
-# -------
-#   --param    Run parameterize_mesh.py first (use custom mesh parameters)
+# Options:
+#   --param    Run parameterize_mesh_full.py first (use custom mesh parameters)
 #   --clean    Remove existing constant/polyMesh before generating
 #   --help     Show this help message
 #
-# Environment Requirements
-# -----------------------
+# Environment Requirements:
 #   - OpenFOAM 7: source /opt/openfoam7/etc/bashrc
-#   - Gmsh Python API: conda activate agent (or pip install gmsh)
-#
-
-# Don't exit on error - we handle errors explicitly
-# set -e removed to prevent issues with warnings
+#   - Gmsh Python API: conda activate agent
 
 # =============================================================================
 # CONFIGURATION
 # =============================================================================
 
-# Script directory (where this script lives)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MESH_DIR="${SCRIPT_DIR}/mesh"
-
-# Case directory (parent of scripts/)
 CASE_DIR="$(dirname "${SCRIPT_DIR}")"
 
-# Mesh generation scripts
 MESH_SCRIPT="${MESH_DIR}/create_wedge_v10.py"
 PARAM_SCRIPT="${MESH_DIR}/parameterize_mesh_full.py"
 GEO_ORIG="${MESH_DIR}/cvrc_2d_profile.geo_unrolled"
 GEO_PARAM="${MESH_DIR}/cvrc_2d_profile_param.geo_unrolled"
 
-# Output mesh file
 MSH_FILE="${CASE_DIR}/cvrc_wedge.msh"
-
-# OpenFOAM mesh directory
 POLY_MESH="${CASE_DIR}/constant/polyMesh"
-
-# Default geo file
 GEO_FILE="${GEO_ORIG}"
 
 # =============================================================================
@@ -66,65 +42,45 @@ CLEAN_MESH=0
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --param)
-            RUN_PARAM=1
-            shift
-            ;;
-        --clean)
-            CLEAN_MESH=1
-            shift
-            ;;
+        --param) RUN_PARAM=1; shift ;;
+        --clean) CLEAN_MESH=1; shift ;;
         --help)
             cat << 'EOF'
 CVRC Wedge Mesh Pipeline
 ========================
 
-Usage:
-  ./scripts/run_mesh_pipeline.sh [OPTIONS]
+Usage: ./scripts/run_mesh_pipeline.sh [OPTIONS]
 
 Options:
-  --param    Run parameterize_mesh.py first (use custom mesh parameters)
-  --clean    Remove existing constant/polyMesh before generating
-  --help     Show this help message
+  --param    Run parameterize_mesh_full.py to customize mesh density
+  --clean    Remove existing polyMesh directory first
+  --help     Show this help
 
-Environment Requirements:
+Environment:
   - OpenFOAM 7: source /opt/openfoam7/etc/bashrc
-  - Gmsh Python API: 
-      conda activate agent
-      OR pip install gmsh --user
-
-Examples:
-  # Run with default mesh
-  ./scripts/run_mesh_pipeline.sh --clean
-  
-  # Run with custom mesh parameters
-  ./scripts/run_mesh_pipeline.sh --param --clean
+  - Gmsh: conda activate agent OR pip install gmsh
 EOF
-            exit 0
-            ;;
-        *)
-            echo "Unknown option: $1"
-            exit 1
-            ;;
+            exit 0 ;;
+        *) echo "Unknown option: $1"; exit 1 ;;
     esac
 done
 
 # =============================================================================
-# PRINT CONFIGURATION
+# CONFIGURATION OUTPUT
 # =============================================================================
 
 echo ""
 echo "============================================================"
 echo "CVRC Wedge Mesh Pipeline"
 echo "============================================================"
-echo "Case directory:  ${CASE_DIR}"
-echo "Mesh script:      ${MESH_SCRIPT}"
-echo "Output mesh:      ${MSH_FILE}"
-echo "PolyMesh:         ${POLY_MESH}"
+echo "Case directory: ${CASE_DIR}"
+echo "Mesh script:    ${MESH_SCRIPT}"
+echo "Output mesh:    ${MSH_FILE}"
+echo "PolyMesh:       ${POLY_MESH}"
 echo ""
 echo "Options:"
-echo "  Run parameterize: ${RUN_PARAM}"
-echo "  Clean existing:   ${CLEAN_MESH}"
+echo "  Parameterize: ${RUN_PARAM}"
+echo "  Clean:        ${CLEAN_MESH}"
 echo "============================================================"
 echo ""
 
@@ -152,12 +108,8 @@ if [[ ${RUN_PARAM} -eq 1 ]]; then
     fi
     cd "${MESH_DIR}"
     python3 "${PARAM_SCRIPT}"
-    # Update geo file to use parameterized version
     GEO_FILE="${GEO_PARAM}"
     echo "  Using parameterized geo: ${GEO_FILE}"
-    
-    # Now update the mesh script to use parameterized geo
-    sed -i "s|SOURCE_GEO.*|SOURCE_GEO = \"${GEO_PARAM}\"|" "${MESH_SCRIPT}"
 fi
 
 # =============================================================================
@@ -166,7 +118,7 @@ fi
 
 echo ""
 echo "Step 2: Generating Gmsh mesh..."
-echo "  Script: ${MESH_SCRIPT}"
+echo "  Script:  ${MESH_SCRIPT}"
 echo "  Geo file: ${GEO_FILE}"
 
 if [[ ! -f "${MESH_SCRIPT}" ]]; then
@@ -179,7 +131,6 @@ if [[ ! -f "${GEO_FILE}" ]]; then
     exit 1
 fi
 
-# Check if gmsh Python module is available
 if ! python3 -c "import gmsh" 2>/dev/null; then
     echo ""
     echo "ERROR: gmsh Python module not found!"
@@ -193,10 +144,9 @@ if ! python3 -c "import gmsh" 2>/dev/null; then
     exit 1
 fi
 
-# Temporarily update SOURCE_GEO in the mesh script
+# Create temp script with updated SOURCE_GEO path
 TMP_SCRIPT="${MESH_DIR}/.create_wedge_tmp.py"
-cp "${MESH_SCRIPT}" "${TMP_SCRIPT}"
-sed -i "s|SOURCE_GEO.*|SOURCE_GEO = \"${GEO_FILE}\"|" "${TMP_SCRIPT}"
+sed "s|SOURCE_GEO = os.path.join(SCRIPT_DIR, \"cvrc_2d_profile.geo_unrounded\")|SOURCE_GEO = \"${GEO_FILE}\"|" "${MESH_SCRIPT}" > "${TMP_SCRIPT}"
 
 cd "${CASE_DIR}"
 python3 "${TMP_SCRIPT}"
@@ -215,7 +165,6 @@ echo "  Created: ${MSH_FILE}"
 echo ""
 echo "Step 3: Converting to OpenFOAM format..."
 
-# Source OpenFOAM
 if [[ -f "/opt/openfoam7/etc/bashrc" ]]; then
     source /opt/openfoam7/etc/bashrc
 else
@@ -224,9 +173,6 @@ else
 fi
 
 cd "${CASE_DIR}"
-
-# Run gmshToFoam
-# Note: dlopen warning for libdfDynamicFvMesh.so is expected if DeepFlame not loaded
 gmshToFoam "${MSH_FILE}"
 
 # =============================================================================
@@ -265,6 +211,7 @@ echo "============================================================"
 echo "Output: ${POLY_MESH}"
 echo ""
 echo "Next steps:"
-echo "  1. Copy field files: for f in U T p CH4 O2 H2O N2 Ydefault; do cp 0/\${f}.orig 0/\${f}; done"
+echo "  1. Copy field files:"
+echo "     for f in U T p CH4 O2 H2O N2 Ydefault; do cp 0/\${f}.orig 0/\${f}; done"
 echo "  2. Run solver: dfHighSpeedFoam"
 echo "============================================================"
