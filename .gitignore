@@ -1,0 +1,27 @@
+# OpenFOAM case files
+*.bak
+*.~ 
+*.orig
+
+# Gmsh backup files
+*.msh.bak
+*.geo.bak
+
+# OpenFOAM time directories (except 0/)
+[1-9]*/
+[1-9]*.*/
+
+# Log and post-processing files
+*.log
+log.*
+*.dat
+
+# ParaView state files
+*.pvd
+*.vtk
+*.foam
+
+# Temporary files
+*.tmp
+*~
+.*.swp

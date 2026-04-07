@@ -1,0 +1,44 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  7                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// CVRC Wedge Mesh - OpenFOAM Control Dictionary
+// 
+// This controlDict is configured for the CVRC combustor wedge mesh.
+// Adjust application, startTime, endTime as needed for your simulation.
+// 
+// Mesh Info:
+//   - 16,285 cells (hex-dominant with prisms near axis)
+//   - 5° wedge angle (2.5° each side)
+//   - Boundary patches: wedgeFront, wedgeBack, wall, oxidizer_inlet,
+//                       fuel_inlet, oxidizer_slot_*, axis, outlet
+// -------------------------------------------------------------------------
+
+application     simpleFoam;
+
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         1;
+deltaT          1;
+
+writeControl    timeStep;
+writeInterval   1;
+
+// Use binary format for better numerical precision
+writeFormat     binary;
+writePrecision  12;
+
+// ************************************************************************* //

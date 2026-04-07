@@ -1,0 +1,78 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  7                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// CVRC Wedge Mesh - Finite Volume Solution
+// 
+// Basic solver settings for wedge mesh simulations.
+// -------------------------------------------------------------------------
+
+solvers
+{
+    p
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-06;
+        relTol          0.1;
+    }
+
+    U
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-05;
+        relTol          0.1;
+    }
+
+    k
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-05;
+        relTol          0.1;
+    }
+
+    epsilon
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-05;
+        relTol          0.1;
+    }
+}
+
+SIMPLE
+{
+    nNonOrthogonalCorrectors 0;
+    pRefCell        0;
+    pRefValue       0;
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p               0.3;
+    }
+    equations
+    {
+        U               0.7;
+        k               0.7;
+        epsilon         0.7;
+    }
+}
+
+// ************************************************************************* //
