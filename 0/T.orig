@@ -14,14 +14,7 @@ FoamFile
     object      T;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Temperature Field
-// 
-// Boundary conditions:
-//   - oxidizer_inlet: 1029 K (hot oxidizer)
-//   - fuel_inlet: 300 K (pure CH4)
-//   - oxidizer_slots: 1029 K (same as main oxidizer)
-//   - outlet: inletOutlet for backflow handling
-//   - walls: zeroGradient (adiabatic)
+// CVRC Combustor - Temperature Field for dfHighSpeedFoam
 // -----------------------------------------------------------------------------
 
 dimensions      [0 0 0 1 0 0 0];
@@ -63,7 +56,6 @@ boundaryField
         value           uniform 300;
     }
 
-    // Oxidizer slots treated as walls (adiabatic)
     oxidizer_slot_1
     {
         type            zeroGradient;
@@ -79,9 +71,7 @@ boundaryField
 
     outlet
     {
-        type            inletOutlet;
-        inletValue      uniform 300;
-        value           uniform 300;
+        type            zeroGradient;
     }
 }
 

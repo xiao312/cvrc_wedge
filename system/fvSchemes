@@ -14,8 +14,10 @@ FoamFile
     object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Finite Volume Schemes for dfLowMachFoam
+// CVRC Combustor - Finite Volume Schemes for dfHighSpeedFoam
 // -----------------------------------------------------------------------------
+
+fluxScheme          Tadmor;
 
 ddtSchemes
 {
@@ -30,34 +32,28 @@ gradSchemes
 divSchemes
 {
     default             none;
-
-    div(phi,U)          Gauss limitedLinearV 1;
-    div(phi,Yi)         Gauss limitedLinear01 1;
-    div(phi,h)          Gauss limitedLinear 1;
-    div(phi,K)          Gauss limitedLinear 1;
-    div(phid,p)         Gauss limitedLinear 1;
-    div(phi,epsilon)    Gauss limitedLinear 1;
-    div(phi,Yi_h)       Gauss limitedLinear01 1;
-    div(phi,k)          Gauss limitedLinear 1;
-    div(((rho*nuEff)*dev2(T(grad(U)))))     Gauss linear;
-    div(vk)             Gauss linear;
-    div(phi,ha)        Gauss limitedLinear 1;
-    div(hDiffCorrFlux) Gauss linear;
+    div(tauMC)          Gauss linear;
+    div(hDiffCorrFlux)   Gauss cubic;
+    div(phi,Yi_h)       Gauss vanLeer;
 }
 
 laplacianSchemes
 {
-    default         Gauss linear orthogonal;
+    default         Gauss linear uncorrected;
 }
 
 interpolationSchemes
 {
-    default         linear;
+    default             linear;
+    reconstruct(rho)    Minmod;
+    reconstruct(U)      MinmodV;
+    reconstruct(T)      Minmod;
+    reconstruct(Yi)     Minmod;
 }
 
 snGradSchemes
 {
-    default         orthogonal;
+    default         uncorrected;
 }
 
 // ************************************************************************* //

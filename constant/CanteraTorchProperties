@@ -14,13 +14,14 @@ FoamFile
     object           CanteraTorchProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Cantera Torch Properties
+// CVRC Combustor - Cantera Torch Properties for dfHighSpeedFoam
 // 
-// Configuration for dfLowMachFoam solver with Cantera chemistry.
-// Uses GRI-Mech 3.0 mechanism for methane-air combustion.
+// Hot oxidizer: 58% H2O, 42% O2 (no N2)
+// Fuel: pure CH4
+// Inert species: N2 (required by GRI-Mech 3.0)
 // -----------------------------------------------------------------------------
 
-chemistry       off;
+chemistry            on;
 
 CanteraMechanismFile "gri30.yaml";
 

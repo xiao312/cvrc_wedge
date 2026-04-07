@@ -14,13 +14,13 @@ FoamFile
     object      U;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Velocity Field
+// CVRC Combustor - Velocity Field for dfHighSpeedFoam
 // 
 // Boundary conditions:
 //   - oxidizer_inlet: 100 m/s in +x direction (axial)
-//   - fuel_inlet: 33 m/s in +y direction (radial, from axis outward)
-//   - walls: no-slip (adiabatic)
-//   - outlet: pressureInletOutletVelocity
+//   - fuel_inlet: 33 m/s in +x direction (axial)
+//   - walls: no-slip
+//   - outlet: zeroGradient
 // -----------------------------------------------------------------------------
 
 dimensions      [0 1 -1 0 0 0 0];
@@ -55,11 +55,11 @@ boundaryField
         value           uniform (100 0 0);
     }
 
-    // Fuel inlet: 33 m/s radial (+y direction, from axis outward)
+    // Fuel inlet: 33 m/s axial (+x direction)
     fuel_inlet
     {
         type            fixedValue;
-        value           uniform (0 33 0);
+        value           uniform (33 0 0);
     }
 
     // Oxidizer slots treated as walls (no active injection)
@@ -78,9 +78,7 @@ boundaryField
 
     outlet
     {
-        type            pressureInletOutletVelocity;
-        inletValue      uniform (0 0 0);
-        value           uniform (0 0 0);
+        type            zeroGradient;
     }
 }
 

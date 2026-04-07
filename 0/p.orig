@@ -14,11 +14,11 @@ FoamFile
     object      p;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Pressure Field
+// CVRC Combustor - Pressure Field for dfHighSpeedFoam
 // 
-// For low-Mach combustion:
-//   - Inlets: zeroGradient (mass flow is specified)
-//   - Outlet: totalPressure (more stable than fixedValue for compressible)
+// For compressible high-speed flow:
+//   - Inlets: zeroGradient (velocity is specified)
+//   - Outlet: fixedValue or waveTransmissive
 // -----------------------------------------------------------------------------
 
 dimensions      [1 -1 -2 0 0 0 0];
@@ -71,8 +71,7 @@ boundaryField
 
     outlet
     {
-        type            totalPressure;
-        p0              uniform 101325;
+        type            fixedValue;
         value           uniform 101325;
     }
 }

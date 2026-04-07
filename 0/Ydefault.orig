@@ -14,10 +14,7 @@ FoamFile
     object      Ydefault;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Default Species Mass Fraction
-// 
-// Ydefault is used as a template for species not explicitly defined.
-// All inlets have zero for default species (only specified species are non-zero).
+// CVRC Combustor - Default Species Mass Fraction for dfHighSpeedFoam
 // -----------------------------------------------------------------------------
 
 dimensions      [0 0 0 0 0 0 0];
@@ -57,7 +54,6 @@ boundaryField
         value           uniform 0;
     }
 
-    // Oxidizer slots treated as walls
     oxidizer_slot_1
     {
         type            zeroGradient;
@@ -73,9 +69,7 @@ boundaryField
 
     outlet
     {
-        type            inletOutlet;
-        inletValue      uniform 0;
-        value           uniform 0;
+        type            zeroGradient;
     }
 }
 

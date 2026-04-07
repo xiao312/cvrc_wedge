@@ -7,19 +7,22 @@
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version         2;
-    format          ascii;
-    class           dictionary;
-    location        "system";
-    object          controlDict;
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Control Dictionary for dfLowMachFoam
-// 
-// Solver: dfLowMachFoam (low Mach number combustion solver with Cantera)
+// CVRC Combustor - Control Dictionary for dfHighSpeedFoam
 // -----------------------------------------------------------------------------
 
-application     dfLowMachFoam;
+libs
+(
+    "libdfDynamicFvMesh.so"
+);
+
+application     dfHighSpeedFoam;
 
 startFrom       startTime;
 
@@ -27,21 +30,21 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         0.1;
+endTime         0.001;
 
-deltaT          1e-05;
+deltaT          1e-07;
 
-writeControl    runTime;
+writeControl    adjustableRunTime;
 
-writeInterval   0.01;
+writeInterval   1e-05;
 
-purgeWrite      0;
+cycleWrite      0;
 
-writeFormat     binary;
+writeFormat     ascii;
 
-writePrecision  10;
+writePrecision  8;
 
-writeCompression off;
+writeCompression on;
 
 timeFormat      general;
 
@@ -49,8 +52,10 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-adjustTimeStep  no;
+adjustTimeStep  yes;
 
-maxCo           0.1;
+maxCo           0.3;
+
+maxDeltaT       1;
 
 // ************************************************************************* //

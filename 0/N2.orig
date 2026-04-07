@@ -11,10 +11,14 @@ FoamFile
     format      ascii;
     class       volScalarField;
     location    "0";
-    object      CH4;
+    object      N2;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Methane Mass Fraction for dfHighSpeedFoam
+// CVRC Combustor - Nitrogen Mass Fraction for dfHighSpeedFoam
+// 
+// N2 is the inert species (required by GRI-Mech 3.0).
+// CVRC combustor has no N2 in feed (hot oxidizer: 58% H2O, 42% O2).
+// Y_N2 = 0 everywhere.
 // -----------------------------------------------------------------------------
 
 dimensions      [0 0 0 0 0 0 0];
@@ -51,7 +55,7 @@ boundaryField
     fuel_inlet
     {
         type            fixedValue;
-        value           uniform 1.0;
+        value           uniform 0;
     }
 
     oxidizer_slot_1

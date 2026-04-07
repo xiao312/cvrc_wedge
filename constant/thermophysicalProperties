@@ -14,10 +14,19 @@ FoamFile
     object      thermophysicalProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Thermophysical Properties
+// CVRC Combustor - Thermophysical Properties for dfHighSpeedFoam
 // 
-// Thermophysical properties are managed by Cantera in dfLowMachFoam.
-// The gri30.yaml mechanism file defines species, reactions, and transport properties.
+// Set inviscid to false for viscous flow (with boundary layers)
+// Set inviscid to true for inviscid flow (Euler equations only)
 // -----------------------------------------------------------------------------
+
+inviscid     false;
+
+liquids
+{
+}
+
+solids
+{}
 
 // ************************************************************************* //

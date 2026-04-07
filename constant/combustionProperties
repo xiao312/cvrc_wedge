@@ -14,48 +14,9 @@ FoamFile
     object      combustionProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Combustion Properties
-// 
-// PaSR (Partially Stirred Reactor) combustion model for turbulent combustion.
-// Alternative: EDC (Eddy Dissipation Concept) can be used for fine-structure
-// based combustion modeling.
+// CVRC Combustor - Combustion Properties for dfHighSpeedFoam
 // -----------------------------------------------------------------------------
 
-combustionModel   PaSR;
-
-EDCCoeffs
-{
-    version v2005;
-}
-
-PaSRCoeffs
-{
-   mixingScale
-   {
-      type   globalScale;
-      
-      globalScaleCoeffs
-      {
-          Cmix  0.01;
-      } 
-
-      dynamicScaleCoeffs
-      {
-        ChiType      algebraic;
-      }	     
-
-   }
-
-   chemistryScale
-   {
-      type  globalConvertion;
-
-      globalConvertionCoeffs
-      {
-          fuel CH4;
-          oxidizer O2;
-      }
-   }
-}
+combustionModel  laminar;
 
 // ************************************************************************* //
