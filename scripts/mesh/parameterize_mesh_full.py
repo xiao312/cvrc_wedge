@@ -53,25 +53,25 @@ NX_CHAMBER = None      # lines 71,73,75,77,79. Original: 17
 # Each layer corresponds to a y-range. ALL vertical edges in that layer must match!
 
 # Layer 1: y = 3.0 - 3.8 mm (thin oxidizer slot - bottom slot)
-NY_LAYER_1 = None  # Original: 4 nodes. Lines: 2, 4, 24, 39, 54, 74, 76
+NY_LAYER_1 = None  # Original: 4 nodes. Lines: 2, 4, 24, 39
 
 # Layer 2: y = 3.8 - 5.8 mm (thick oxidizer slot)
-NY_LAYER_2 = None  # Original: 9 nodes. Lines: 5, 7, 40, 43
+NY_LAYER_2 = None  # Original: 9 nodes. Lines: 5, 7
 
 # Layer 3: y = 5.8 - 6.3 mm (thin slot)
-NY_LAYER_3 = None  # Original: 3 nodes. Lines: 8, 10, 44, 49
+NY_LAYER_3 = None  # Original: 3 nodes. Lines: 8, 10
 
 # Layer 4: y = 6.3 - 8.0 mm (thick slot)
-NY_LAYER_4 = None  # Original: 8 nodes. Lines: 11, 13, 46, 48
+NY_LAYER_4 = None  # Original: 8 nodes. Lines: 11, 13
 
 # Layer 5: y = 8.0 - 8.3 mm (very thin slot)
-NY_LAYER_5 = None  # Original: 3 nodes. Lines: 14, 16, 50, 52
+NY_LAYER_5 = None  # Original: 3 nodes. Lines: 14, 16
 
 # Layer 6: y = 8.3 - 9.7 mm (medium slot)
-NY_LAYER_6 = None  # Original: 7 nodes. Lines: 17, 19, 51, 53
+NY_LAYER_6 = None  # Original: 7 nodes. Lines: 17, 19
 
 # Layer 7: y = 9.7 - 10.235 mm (thin top slot)
-NY_LAYER_7 = None  # Original: 4 nodes. Lines: 20, 22, 27, 30
+NY_LAYER_7 = None  # Original: 4 nodes. Lines: 20, 22
 
 # Axis layer: y = 0 - 3.0 mm (below oxidizer inlet)
 NY_AXIS = None  # Original: 13 nodes. Lines: 35, 36, 37, 38
@@ -92,7 +92,7 @@ NY_AXIS = None  # Original: 13 nodes. Lines: 35, 36, 37, 38
 # But lines 39 has different context, so only lines 2, 4, 24 must match
 
 LAYER_CONSTRAINTS = {
-    'NY_LAYER_1': [2, 4, 24],      # Inlet + slot strip connection
+    'NY_LAYER_1': [2, 4, 24, 39],  # Inlet + slot strip + axis (all connected)
     'NY_LAYER_2': [5, 7],           # Inlet block 2
     'NY_LAYER_3': [8, 10],          # Inlet block 3
     'NY_LAYER_4': [11, 13],         # Inlet block 4
