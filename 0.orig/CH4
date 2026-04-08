@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  7                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      CH4;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// CVRC Combustor - Methane Mass Fraction for dfHighSpeedFoam
+// -----------------------------------------------------------------------------
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    back
+    {
+        type            wedge;
+    }
+    front
+    {
+        type            wedge;
+    }
+
+    axis
+    {
+        type            empty;
+    }
+
+    wall
+    {
+        type            zeroGradient;
+    }
+
+    oxidizer_inlet
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    fuel_inlet
+    {
+        type            fixedValue;
+        value           uniform 1.0;
+    }
+
+    oxidizer_slot_1
+    {
+        type            zeroGradient;
+    }
+    oxidizer_slot_2
+    {
+        type            zeroGradient;
+    }
+    oxidizer_slot_3
+    {
+        type            zeroGradient;
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+}
+
+// ************************************************************************* //

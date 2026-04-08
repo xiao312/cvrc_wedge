@@ -1,99 +1,103 @@
-# CVRC Wedge Mesh for OpenFOAM
+# CVRC Combustor — dfHighSpeedFoam Simulation
 
-## Overview
-
-This directory contains the final mesh for the CVRC (Continuously Variable Resonance Combustor) axisymmetric combustor simulation in OpenFOAM.
+Axisymmetric 2D-wedge simulation of the Continuously Variable Resonance
+Combustor (CVRC) using DeepFlame's density-based compressible reacting solver.
 
 ## Quick Start
 
 ```bash
-# Convert Gmsh mesh to OpenFOAM format
-gmshToFoam cvrc_wedge_v9.msh
-
-# Remove unnecessary zone files created by gmshToFoam
-rm -f constant/polyMesh/faceZones constant/polyMesh/cellZones constant/polyMesh/pointZones
-rm -rf constant/polyMesh/sets
-
-# Update boundary types
-# (boundary file is already configured with correct patch types)
-
-# Check mesh quality
-checkMesh
-```
-
-## Mesh Specifications
-
-| Property | Value |
-|----------|-------|
-| Wedge angle | 5° total (2.5° each side) |
-| Cells | 16,285 |
-| Points | 32,682 |
-| Mesh type | Hex-dominant with prisms near axis |
-
-## Boundary Patches
-
-| Patch | Faces | Type | Description |
-|-------|-------|------|-------------|
-| wedgeFront | 16,285 | wedge | Front wedge face (θ = -2.5°) |
-| wedgeBack | 16,285 | wedge | Back wedge face (θ = +2.5°) |
-| wall | 701 | wall | Combustor walls |
-| oxidizer_inlet | 31 | patch | Oxidizer inlet at x = -160 mm |
-| fuel_inlet | 3 | patch | Fuel inlet at x = -30 mm |
-| oxidizer_slot_1/2/3 | 28/26/24 | patch | Oxidizer injection slots |
-| axis | 538 | empty | Symmetry axis (y ≈ 0) |
-| outlet | 24 | patch | Outlet at x ≈ 400 mm |
-
-## Files
-
-| File | Description |
-|------|-------------|
-| `create_wedge_v9.py` | Gmsh Python script to generate the wedge mesh |
-| `cvrc_2d_profile.geo_unrolled` | Source 2D geometry (Gmsh geo format) |
-| `cvrc_2d_profile.msh` | Source 2D mesh |
-| `cvrc_wedge_v9.msh` | Final 3D wedge mesh (Gmsh format) |
-| `constant/polyMesh/` | OpenFOAM mesh files |
-| `system/` | OpenFOAM control dictionaries |
-| `0/` | Initial conditions directory |
-| `WEDGE_MESH_JOURNEY.md` | Detailed development history |
-| `REMAINING_ISSUES.md` | Known issues and resolutions |
-
-## Regenerating the Mesh
-
-```bash
-# Activate conda environment with Gmsh
-conda activate agent
-
-# Run the mesh generation script
-python3 create_wedge_v9.py
-
-# Convert to OpenFOAM format
+# 1. Environment
 source /opt/openfoam7/etc/bashrc
-gmshToFoam cvrc_wedge_v9.msh
+conda activate agent
+source /home/xk/deepflame/df_1be82b6/deepflame-dev/bashrc
 
-# Clean up zone files
-rm -f constant/polyMesh/faceZones constant/polyMesh/cellZones constant/polyMesh/pointZones
-rm -rf constant/polyMesh/sets
+# 2. Regenerate mesh (if needed)
+./scripts/run_mesh_pipeline.sh --param --clean
+
+# 3. Prepare fields
+cp -r 0.orig 0
+
+# 4. Decompose & run
+decomposePar
+mpirun -np 8 dfHighSpeedFoam -parallel > log.dfHighSpeedFoam 2>&1 &
 ```
 
-## Known Issues
+## Directory Layout
 
-### Axis Faces (Gmsh vs blockMesh)
+```
+.
+├── 0/                    Working field files (copied from 0.orig)
+├── 0.orig/               Canonical initial/boundary conditions
+│   ├── U                 Velocity (ramped inlet: 0→100 m/s over 0.5 ms)
+│   ├── T                 Temperature (300 K ambient, 1029 K oxidizer inlet)
+│   ├── p                 Pressure (101325 Pa)
+│   ├── CH4               Methane mass fraction (1.0 at fuel inlet)
+│   ├── O2                Oxygen (0.42 at oxidizer inlet)
+│   ├── H2O               Water (0.58 at oxidizer inlet)
+│   ├── N2                Nitrogen (inert, Y=0 everywhere)
+│   └── Ydefault          Default species BC (zeroGradient walls)
+├── 0.00025/ … 0.001/    Reconstructed solution snapshots (inert flow)
+├── constant/
+│   ├── polyMesh/         72k-cell wedge mesh (extrudeMesh from Gmsh slab)
+│   ├── CanteraTorchProperties   Chemistry config (off locally, on for server)
+│   ├── combustionProperties     Laminar combustion model
+│   ├── thermophysicalProperties Inviscid=false
+│   └── turbulenceProperties     Laminar (no turbulence model)
+├── system/
+│   ├── controlDict       dt=5e-8, fixed, Tadmor flux
+│   ├── fvSchemes         Tadmor + Minmod limiters
+│   ├── fvSolution        PBiCGStab solvers
+│   ├── decomposeParDict  scotch, 32 domains (local) / 128 (SCNET)
+│   ├── extrudeMeshDict   Wedge 5° from slab back patch
+│   └── setFieldsDict     (NOT used — creates instabilities)
+├── scripts/
+│   ├── run_mesh_pipeline.sh          Full mesh pipeline
+│   └── mesh/
+│       ├── parameterize_mesh_full.py Constraint-aware mesh parameteriser
+│       ├── create_slab_mesh.py       Gmsh → 1-cell slab mesh
+│       ├── cvrc_2d_profile.geo_unrolled        Original geometry
+│       └── cvrc_2d_profile_param.geo_unrolled  Parameterised geometry
+├── docs/
+│   ├── stability_fixes.md   Crash analysis & fix log
+│   └── mesh_pipeline.md     Mesh generation documentation
+├── gri30.yaml               GRI-Mech 3.0 (53 species)
+└── log.dfHighSpeedFoam      Inert-flow run log (1 ms, SCNET 32 cores)
+```
 
-Gmsh-revolved wedge meshes have axis faces (nFaces=538) while blockMesh wedges have nFaces=0.
-This is expected behavior:
-- Gmsh creates surfaces from axis curves during revolution
-- These faces are degenerate (all points at y≈0)
-- OpenFOAM handles them correctly with `type empty`
+## Mesh
 
-### checkMesh Warning
+- **72k cells**, 2D axisymmetric wedge (5°, ±2.5°)
+- Generated via: Gmsh 2D → slab extrude → `gmshToFoam` → `extrudeMesh wedge`
+- Structured transfinite blocks (inlet, slots, axis, fuel, chamber)
+  + unstructured regions (oxidizer plenum, combustion chamber)
+- Parameterised: edit `scripts/mesh/parameterize_mesh_full.py` for node counts,
+  grading, sizing fields, and characteristic lengths
+- See `docs/mesh_pipeline.md` for details
 
-The message `"***Total number of faces on empty patches is not divisible by the number of cells"` is informational for wedge meshes. The mesh passes all checks with "Mesh OK."
+## Boundary Conditions
 
-## References
+| Patch | Type | U | T | p | Species |
+|-------|------|---|---|---|---------|
+| oxidizer_inlet | inlet | ramp 0→100 m/s (0.5ms) | 1029 K | zeroGradient | O2=0.42, H2O=0.58 |
+| fuel_inlet | inlet | ramp 0→33 m/s (0.5ms) | 300 K | zeroGradient | CH4=1.0 |
+| outlet | outlet | zeroGradient | zeroGradient | 101325 Pa | zeroGradient |
+| wall, slot_1/2/3 | wall | noSlip | zeroGradient | zeroGradient | zeroGradient |
+| back, front | wedge | wedge | wedge | wedge | wedge |
+| axis | empty | empty | empty | empty | empty |
 
-- See `WEDGE_MESH_JOURNEY.md` for detailed development history
-- See `REMAINING_ISSUES.md` for resolved issues and known limitations
+## Key Decisions
 
-## License
+- **Velocity ramping** (0→full over 0.5ms): prevents impulsive pressure
+  waves through narrow slots — the single most important stability fix
+- **Tadmor flux**: most dissipative, most stable for narrow-slot geometry
+  (Kurganov tested and rejected — 32× less stable)
+- **No setFields**: sharp T discontinuities (1029 vs 300 K) cause worse
+  crashes than gradual startup from uniform cold field
+- **dt = 5e-8 s** (fixed): gives max Co ≈ 0.15, stable through ramp
 
-Generated for CVRC combustor CFD research.
+## SCNET HPC Runs
+
+| Run | Cores | Chemistry | Time range | Status |
+|-----|-------|-----------|------------|--------|
+| Inert flow | 32 | off | 0→1 ms | ✅ Complete (4.7h) |
+| Reacting flow | 128 | on (GRI-3.0) | 1→11 ms | 🔄 Running (job 111153724, ETA ~58h) |

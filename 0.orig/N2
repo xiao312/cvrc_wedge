@@ -1,0 +1,80 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  7                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      N2;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// CVRC Combustor - Nitrogen Mass Fraction for dfHighSpeedFoam
+// 
+// N2 is the inert species (required by GRI-Mech 3.0).
+// CVRC combustor has no N2 in feed (hot oxidizer: 58% H2O, 42% O2).
+// Y_N2 = 0 everywhere.
+// -----------------------------------------------------------------------------
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    back
+    {
+        type            wedge;
+    }
+    front
+    {
+        type            wedge;
+    }
+
+    axis
+    {
+        type            empty;
+    }
+
+    wall
+    {
+        type            zeroGradient;
+    }
+
+    oxidizer_inlet
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    fuel_inlet
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    oxidizer_slot_1
+    {
+        type            zeroGradient;
+    }
+    oxidizer_slot_2
+    {
+        type            zeroGradient;
+    }
+    oxidizer_slot_3
+    {
+        type            zeroGradient;
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+}
+
+// ************************************************************************* //

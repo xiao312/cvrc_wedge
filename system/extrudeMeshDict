@@ -1,0 +1,40 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      extrudeMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Build wedge from the z=0 face of the Gmsh slab mesh
+constructFrom   patch;
+sourceCase      ".";
+sourcePatches   ( back );
+exposedPatchName front;
+
+flipNormals     false;
+
+// 5° wedge around the combustor axis (x-axis)
+extrudeModel    wedge;
+nLayers         1;
+expansionRatio  1;
+
+sectorCoeffs
+{
+    axisPt      (0 0 0);
+    axis        (-1 0 0);
+    angle       5;
+}
+
+mergeFaces      false;
+mergeTol        0;
+
+// ************************************************************************* //

@@ -17,74 +17,75 @@ FoamFile
 
 10
 (
-    wedgeFront
+    back
     {
-        type            patch;
-        physicalType    patch;
-        nFaces          16085;
-        startFace       31244;
+        type            wedge;
+        inGroups        List<word> 1(wedge);
+        nFaces          71986;
+        startFace       140561;
     }
-    wedgeBack
+    front
     {
-        type            patch;
-        physicalType    patch;
-        nFaces          16085;
-        startFace       47329;
+        type            wedge;
+        inGroups        List<word> 1(wedge);
+        nFaces          71986;
+        startFace       212547;
     }
     wall
     {
-        type            patch;
-        physicalType    patch;
-        nFaces          695;
-        startFace       63414;
+        type            wall;
+        inGroups List<word> 1(wall);
+        nFaces          1509;
+        startFace       284533;
     }
     oxidizer_inlet
     {
         type            patch;
         physicalType    patch;
-        nFaces          34;
-        startFace       64109;
+        nFaces          31;
+        startFace       286042;
     }
     oxidizer_slot_1
     {
-        type            patch;
-        physicalType    patch;
-        nFaces          28;
-        startFace       64143;
+        type            wall;
+        inGroups List<word> 1(wall);
+        nFaces          36;
+        startFace       286073;
     }
     oxidizer_slot_2
     {
-        type            patch;
-        physicalType    patch;
-        nFaces          26;
-        startFace       64171;
+        type            wall;
+        inGroups List<word> 1(wall);
+        nFaces          34;
+        startFace       286109;
     }
     oxidizer_slot_3
     {
-        type            patch;
-        physicalType    patch;
-        nFaces          24;
-        startFace       64197;
+        type            wall;
+        inGroups List<word> 1(wall);
+        nFaces          32;
+        startFace       286143;
+    }
+    axis
+    {
+        type            empty;
+        inGroups List<word> 1(empty);
+        nFaces          1250;
+        startFace       286175;
     }
     fuel_inlet
     {
         type            patch;
         physicalType    patch;
         nFaces          3;
-        startFace       64221;
+        startFace       287425;
     }
     outlet
     {
         type            patch;
         physicalType    patch;
-        nFaces          24;
-        startFace       64224;
-    }
-    defaultFaces
-    {
-        type            patch;
-        nFaces          544;
-        startFace       64248;
+        nFaces          40;
+        startFace       287428;
     }
 )
 

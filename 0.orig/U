@@ -1,0 +1,97 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  7                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// CVRC Combustor - Velocity Field for dfHighSpeedFoam
+// 
+// Boundary conditions:
+//   - oxidizer_inlet: 100 m/s in +x direction (axial)
+//   - fuel_inlet: 33 m/s in +x direction (axial)
+//   - walls: no-slip
+//   - outlet: zeroGradient
+// -----------------------------------------------------------------------------
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    back
+    {
+        type            wedge;
+    }
+    front
+    {
+        type            wedge;
+    }
+
+    axis
+    {
+        type            empty;
+    }
+
+    wall
+    {
+        type            noSlip;
+    }
+
+    // Hot oxidizer: 100 m/s axial (+x direction)
+    oxidizer_inlet
+    {
+        type            uniformFixedValue;
+        uniformValue    table
+        (
+            (0       (0 0 0))
+            (0.0002  (50 0 0))
+            (0.0005  (100 0 0))
+            (1.0     (100 0 0))
+        );
+    }
+
+    // Fuel inlet: 33 m/s axial (+x direction)
+    fuel_inlet
+    {
+        type            uniformFixedValue;
+        uniformValue    table
+        (
+            (0       (0 0 0))
+            (0.0002  (16.5 0 0))
+            (0.0005  (33 0 0))
+            (1.0     (33 0 0))
+        );
+    }
+
+    // Oxidizer slots treated as walls (no active injection)
+    oxidizer_slot_1
+    {
+        type            noSlip;
+    }
+    oxidizer_slot_2
+    {
+        type            noSlip;
+    }
+    oxidizer_slot_3
+    {
+        type            noSlip;
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+}
+
+// ************************************************************************* //
