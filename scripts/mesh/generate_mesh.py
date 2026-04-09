@@ -288,7 +288,7 @@ def generate():
             return "outlet"
         if xmin < X_INLET + 1 and abs(xmax - xmin) < 0.5 and ymin > R_AXIS - 0.5:
             return "oxidizer_inlet"
-        if abs(xmin - X_FUEL) < 1 and abs(xmax - xmin) < 0.5 and ymin > R_OX_TOP - 0.5:
+        if abs(xmin - X_FUEL) < 1 and abs(xmax - xmin) < 0.5 and ymin > R_STEP - 0.5:
             return "fuel_inlet"
         return "wall"
 

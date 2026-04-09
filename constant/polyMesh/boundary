@@ -35,7 +35,7 @@ FoamFile
     {
         type            patch;
         physicalType    patch;
-        nFaces          1547;
+        nFaces          1551;
         startFace       422414;
     }
     oxidizer_inlet
@@ -43,21 +43,21 @@ FoamFile
         type            patch;
         physicalType    patch;
         nFaces          29;
-        startFace       423961;
+        startFace       423965;
     }
     axis
     {
         type            patch;
         physicalType    patch;
         nFaces          1111;
-        startFace       423990;
+        startFace       423994;
     }
     fuel_inlet
     {
         type            patch;
         physicalType    patch;
-        nFaces          7;
-        startFace       425101;
+        nFaces          3;
+        startFace       425105;
     }
     outlet
     {
