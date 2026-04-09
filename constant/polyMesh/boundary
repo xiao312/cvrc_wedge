@@ -15,77 +15,56 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-10
+7
 (
     back
     {
-        type            wedge;
-        inGroups        List<word> 1(wedge);
-        nFaces          71986;
-        startFace       140561;
+        type            patch;
+        physicalType    patch;
+        nFaces          15966;
+        startFace       31245;
     }
     front
     {
-        type            wedge;
-        inGroups        List<word> 1(wedge);
-        nFaces          71986;
-        startFace       212547;
+        type            patch;
+        physicalType    patch;
+        nFaces          15966;
+        startFace       47211;
+    }
+    axis
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          561;
+        startFace       63177;
     }
     wall
     {
-        type            wall;
-        inGroups List<word> 1(wall);
-        nFaces          1509;
-        startFace       284533;
+        type            patch;
+        physicalType    patch;
+        nFaces          747;
+        startFace       63738;
     }
     oxidizer_inlet
     {
         type            patch;
         physicalType    patch;
-        nFaces          31;
-        startFace       286042;
-    }
-    oxidizer_slot_1
-    {
-        type            wall;
-        inGroups List<word> 1(wall);
-        nFaces          36;
-        startFace       286073;
-    }
-    oxidizer_slot_2
-    {
-        type            wall;
-        inGroups List<word> 1(wall);
-        nFaces          34;
-        startFace       286109;
-    }
-    oxidizer_slot_3
-    {
-        type            wall;
-        inGroups List<word> 1(wall);
-        nFaces          32;
-        startFace       286143;
-    }
-    axis
-    {
-        type            empty;
-        inGroups List<word> 1(empty);
-        nFaces          1250;
-        startFace       286175;
+        nFaces          37;
+        startFace       64485;
     }
     fuel_inlet
     {
         type            patch;
         physicalType    patch;
         nFaces          3;
-        startFace       287425;
+        startFace       64522;
     }
     outlet
     {
         type            patch;
         physicalType    patch;
-        nFaces          40;
-        startFace       287428;
+        nFaces          24;
+        startFace       64525;
     }
 )
 

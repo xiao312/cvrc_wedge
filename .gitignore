@@ -19,3 +19,5 @@ scripts/mesh/.create_slab_tmp.py
 # OS
 .DS_Store
 Thumbs.db
+*.json
+cvrc_slab.msh
