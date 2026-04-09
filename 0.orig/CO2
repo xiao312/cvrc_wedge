@@ -11,17 +11,15 @@ FoamFile
     format      ascii;
     class       volScalarField;
     location    "0";
-    object      O2;
+    object      CO2;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// CVRC Combustor - Oxygen Mass Fraction for dfHighSpeedFoam
-// 
-// Hot oxidizer composition (1029 K): 58% H2O, 42% O2 by weight
+// CVRC Combustor - Default Species Mass Fraction for dfHighSpeedFoam
 // -----------------------------------------------------------------------------
 
 dimensions      [0 0 0 0 0 0 0];
 
-internalField   uniform 0;
+internalField   uniform 0.29;
 
 boundaryField
 {
@@ -47,7 +45,7 @@ boundaryField
     oxidizer_inlet
     {
         type            fixedValue;
-        value           uniform 0.42;
+        value           uniform 0;
     }
 
     fuel_inlet
