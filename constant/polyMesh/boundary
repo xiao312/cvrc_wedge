@@ -21,50 +21,50 @@ FoamFile
     {
         type            patch;
         physicalType    patch;
-        nFaces          121076;
-        startFace       180262;
+        nFaces          120089;
+        startFace       178811;
     }
     front
     {
         type            patch;
         physicalType    patch;
-        nFaces          121076;
-        startFace       301338;
+        nFaces          120089;
+        startFace       298900;
     }
     wall
     {
         type            patch;
         physicalType    patch;
-        nFaces          1551;
-        startFace       422414;
+        nFaces          1493;
+        startFace       418989;
     }
     oxidizer_inlet
     {
         type            patch;
         physicalType    patch;
         nFaces          29;
-        startFace       423965;
+        startFace       420482;
     }
     axis
     {
         type            patch;
         physicalType    patch;
         nFaces          1111;
-        startFace       423994;
+        startFace       420511;
     }
     fuel_inlet
     {
         type            patch;
         physicalType    patch;
-        nFaces          3;
-        startFace       425105;
+        nFaces          2;
+        startFace       421622;
     }
     outlet
     {
         type            patch;
         physicalType    patch;
         nFaces          10;
-        startFace       425108;
+        startFace       421624;
     }
 )
 

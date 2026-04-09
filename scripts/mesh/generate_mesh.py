@@ -140,24 +140,25 @@ def generate():
     quad(X_INJ_FACE, R_AXIS, X_POST_START, R_OX_TOP,
          "passage_ox", NX_PASSAGE, NY_OX_PASSAGE)
 
-    # ── Oxidizer plenum (x=-128 to -10.16) — unstructured ────────
-    p_mid = [
-        pt(X_POST_START, EPS, LC_MID),
-        pt(X_POST_END, EPS, LC_MID),
-        pt(X_POST_END, R_OX_TOP, LC_MID),
-        pt(X_POST_START, R_OX_TOP, LC_MID),
+    # ── Oxidizer plenum (x=-128 to -10.16) — L-shaped, unstructured ──
+    # Combined L-shape: main (-128,eps)→(-10.16,10.235) + notch (-30,10.235)→(-10.16,11)
+    # No internal wall at x=-30, y=10.235→11.
+    p_pl = [
+        pt(X_POST_START, EPS, LC_MID),       # (-128, eps)
+        pt(X_POST_END, EPS, LC_MID),          # (-10.16, eps)
+        pt(X_POST_END, R_STEP, LC_MID),       # (-10.16, 11)
+        pt(X_FUEL, R_STEP, LC_MID),           # (-30, 11)
+        pt(X_FUEL, R_OX_TOP, LC_MID),         # (-30, 10.235)
+        pt(X_POST_START, R_OX_TOP, LC_MID),   # (-128, 10.235)
     ]
-    c_mid = [ln(p_mid[0], p_mid[1]), ln(p_mid[1], p_mid[2]),
-             ln(p_mid[2], p_mid[3]), ln(p_mid[3], p_mid[0])]
-    loop = geo.addCurveLoop(c_mid)
+    c_pl = [ln(p_pl[i], p_pl[(i+1) % 6]) for i in range(6)]
+    loop = geo.addCurveLoop(c_pl)
     s_mid = geo.addPlaneSurface([loop])
     surfaces.append((s_mid, "plenum"))
 
-    # ── Fuel pipe ─────────────────────────────────────────────────
+    # ── Fuel pipe (inner annulus only: y=11 to 11.53) ─────────────
     quad(X_FUEL, R_STEP, X_POST_END, R_RECESS,
          "fuel_inner", NX_FUEL, NY_FUEL_INNER)
-    quad(X_FUEL, R_OX_TOP, X_POST_END, R_STEP,
-         "fuel_outer", NX_FUEL, NY_FUEL_OUTER)
 
     # ── Recess blocks (x=-10.16 to 0) ────────────────────────────
     quad(X_POST_END, EPS, X_CHAM_0, R_OX_TOP,
@@ -227,7 +228,7 @@ def generate():
 
     # ── Size fields for plenum + nozzle ───────────────────────────
     # Distance from structured boundaries into plenum
-    plenum_bnd = [abs(c_mid[i]) for i in range(4)]
+    plenum_bnd = [abs(c) for c in c_pl]
     f1 = gmsh.model.mesh.field.add("Distance")
     gmsh.model.mesh.field.setNumbers(f1, "CurvesList", plenum_bnd)
     gmsh.model.mesh.field.setNumber(f1, "Sampling", 100)
@@ -242,6 +243,11 @@ def generate():
     f9 = gmsh.model.mesh.field.add("Min")
     gmsh.model.mesh.field.setNumbers(f9, "FieldsList", [f2])
     gmsh.model.mesh.field.setAsBackgroundMesh(f9)
+
+    # ── Export geometry for inspection ─────────────────────────
+    geo_file = os.path.join(CASE_DIR, "cvrc_geometry.geo_unrolled")
+    gmsh.write(geo_file)
+    print(f"Geometry written: {geo_file}")
 
     # ── Mesh 2D ───────────────────────────────────────────────────
     print("Meshing 2D...")
